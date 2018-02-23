@@ -1,3 +1,6 @@
-language: Java
+language: java
+sudo: false
 
-script: Lazy/gradlew clean check
+before_install: cd Lazy
+
+script: ./gradlew clean check
