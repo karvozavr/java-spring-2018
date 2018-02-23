@@ -1,4 +1,3 @@
 language: Java
 
-./gradlew assemble
-./gradlew check
+script: ./gradlew clean check
