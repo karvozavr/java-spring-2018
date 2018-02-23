@@ -2,6 +2,7 @@ group 'ru.spbau.mit.karvozavr.lazy'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'base'
 
 sourceCompatibility = 1.8
 
