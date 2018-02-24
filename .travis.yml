@@ -1,6 +1,6 @@
 language: java
 sudo: false
 
-before_install: cd Lazy
-
+env:
+  - TEST_DIR=Lazy
 script: ./gradlew clean check
