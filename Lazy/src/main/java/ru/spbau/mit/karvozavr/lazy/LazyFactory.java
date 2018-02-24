@@ -74,7 +74,7 @@ public class LazyFactory {
     private static class ConcurrentLazy<T> implements Lazy<T> {
 
         @Nullable
-        private Supplier<T> supplier;
+        private volatile Supplier<T> supplier;
         @Nullable
         private volatile T value;
 
