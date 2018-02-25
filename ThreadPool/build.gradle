@@ -1,4 +1,4 @@
-group 'ru.spbau.mit.karvozavr.lazy'
+group 'ru.spbau.mit.karvozavr.threadpool'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
