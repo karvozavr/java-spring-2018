@@ -3,4 +3,5 @@ sudo: false
 
 env:
   - TEST_DIR=Lazy
+  - TEST_DIR=ThreadPool
 script: cd $TEST_DIR && ./gradlew clean check

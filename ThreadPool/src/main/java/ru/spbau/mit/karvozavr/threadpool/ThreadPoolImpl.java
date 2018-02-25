@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * ThreadPool implementation with fixed amount of threads.
@@ -27,5 +28,10 @@ public class ThreadPoolImpl {
         for (int i = 0; i < threadAmount; i++) {
             threads.add(new Thread());
         }
+    }
+
+    @NotNull
+    public <T> LightFuture<T> addTask(@NotNull Supplier<T> computation) {
+        return null;
     }
 }
