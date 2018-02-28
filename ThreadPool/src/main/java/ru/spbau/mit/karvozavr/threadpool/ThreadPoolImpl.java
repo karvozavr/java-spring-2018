@@ -26,7 +26,7 @@ public class ThreadPoolImpl {
      * Worker of the single thread in thread pool.
      * It has two states: waiting for task and executing task.
      */
-    private Runnable worker = () -> {
+    private final Runnable worker = () -> {
         LightFutureImpl<?> computation;
 
         outer:
