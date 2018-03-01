@@ -22,6 +22,8 @@ public class ThreadPoolImpl {
     @NotNull
     private volatile Queue<LightFutureImpl<?>> tasks = new LinkedList<>();
 
+    private final int threadAmount;
+
     /**
      * Worker of the single thread in thread pool.
      * It has two states: waiting for task and executing task.
@@ -43,11 +45,14 @@ public class ThreadPoolImpl {
                     }
                 }
 
-                computation = tasks.peek();
+                computation = tasks.poll();
             }
 
             computation.run();
-            computation.notifyAll();
+
+            synchronized (computation) {
+                computation.notifyAll();
+            }
         }
     };
 
@@ -68,6 +73,8 @@ public class ThreadPoolImpl {
         for (Thread thread : threads) {
             thread.start();
         }
+
+        this.threadAmount = threadAmount;
     }
 
     /**
@@ -97,6 +104,10 @@ public class ThreadPoolImpl {
         for (Thread thread : threads) {
             thread.interrupt();
         }
+    }
+
+    public int getThreadAmount() {
+        return threadAmount;
     }
 
     /**
@@ -133,11 +144,13 @@ public class ThreadPoolImpl {
 
         @Override
         public T get() throws LightExecutionException {
-            while (!isReady) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+            synchronized (this) {
+                while (!isReady) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 
