@@ -20,41 +20,9 @@ public class ThreadPoolImpl {
     private final List<Thread> threads = new ArrayList<>();
 
     @NotNull
-    private volatile Queue<LightFutureImpl<?>> tasks = new LinkedList<>();
+    private final Queue<LightFutureImpl<?>> taskQueue = new LinkedList<>();
 
     private final int threadAmount;
-
-    /**
-     * Worker of the single thread in thread pool.
-     * It has two states: waiting for task and executing task.
-     */
-    private Runnable worker = () -> {
-        LightFutureImpl<?> computation;
-
-        outer:
-        while (true) {
-            if (Thread.interrupted())
-                break;
-
-            synchronized (ThreadPoolImpl.this) {
-                while (tasks.isEmpty()) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        break outer;
-                    }
-                }
-
-                computation = tasks.poll();
-            }
-
-            computation.run();
-
-            synchronized (computation) {
-                computation.notifyAll();
-            }
-        }
-    };
 
     /**
      * Constructs ThreadPoolImpl with {@code threadAmount} threads.
@@ -78,8 +46,34 @@ public class ThreadPoolImpl {
     }
 
     /**
+     * Worker of the single thread in thread pool.
+     * It has two states: waiting for task and executing task.
+     */
+    private Runnable worker = () -> {
+        LightFutureImpl<?> computation;
+
+        while (!Thread.interrupted()) {
+            try {
+                synchronized (taskQueue) {
+                    while (taskQueue.isEmpty())
+                        taskQueue.wait();
+                    computation = taskQueue.poll();
+                }
+            } catch (InterruptedException e) {
+                break;
+            }
+
+            computation.run();
+
+            synchronized (computation) {
+                computation.notifyAll();
+            }
+        }
+    };
+
+    /**
      * Adds task to thread pool.
-     * If there is free thread, the tasks runs in it, otherwise, it waits for free thread.
+     * If there is free thread, the task runs in it, otherwise, it waits for free thread.
      *
      * @param computation task to be added
      * @param <T>         type of computation result
@@ -89,9 +83,9 @@ public class ThreadPoolImpl {
     public <T> LightFuture<T> addTask(@NotNull Supplier<T> computation) {
         LightFutureImpl<T> task = new LightFutureImpl<>(computation);
 
-        synchronized (this) {
-            tasks.add(task);
-            notifyAll();
+        synchronized (taskQueue) {
+            taskQueue.add(task);
+            taskQueue.notify();
         }
 
         return task;
@@ -123,7 +117,7 @@ public class ThreadPoolImpl {
         private volatile Throwable exception;
 
 
-        public LightFutureImpl(Supplier<T> computation) {
+        public LightFutureImpl(@NotNull Supplier<T> computation) {
             this.computation = computation;
         }
 
@@ -162,7 +156,7 @@ public class ThreadPoolImpl {
 
         @NotNull
         @Override
-        public <R> LightFuture<R> thenApply(Function<? super T, ? extends R> function) {
+        public <R> LightFuture<R> thenApply(@NotNull Function<? super T, ? extends R> function) {
             return ThreadPoolImpl.this.addTask(() -> function.apply(get()));
         }
     }

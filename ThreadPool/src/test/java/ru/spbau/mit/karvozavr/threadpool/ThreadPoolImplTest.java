@@ -7,14 +7,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
 
 public class ThreadPoolImplTest {
 
     @Test
-    public void testSingleTaskExecution() throws InterruptedException {
+    public void testSingleTaskExecution() {
         ThreadPoolImpl threadPool = new ThreadPoolImpl(4);
         LightFuture<Integer> value = threadPool.addTask(() -> 42);
         assertThat(value.get(), is(42));
@@ -22,7 +21,7 @@ public class ThreadPoolImplTest {
     }
 
     @Test
-    public void testThenApplySmoke() throws InterruptedException {
+    public void testThenApplySmoke() {
         ThreadPoolImpl threadPool = new ThreadPoolImpl(4);
         LightFuture<Integer> value = threadPool.addTask(() -> 42);
         value = value.thenApply(val -> val * val);
@@ -31,17 +30,17 @@ public class ThreadPoolImplTest {
     }
 
     @Test
-    public void testMultipleTaskExecutionAtOneThread() throws InterruptedException {
+    public void testMultipleTaskExecutionAtOneThread() {
         testTasksExecution(20, 1);
     }
 
     @Test
-    public void testMultipleTaskExecutionAtNormalThreads() throws InterruptedException {
+    public void testMultipleTaskExecutionAtNormalThreads() {
         testTasksExecution(100, 4);
     }
 
     @Test
-    public void testMultipleTaskExecutionAtManyThreads() throws InterruptedException {
+    public void testMultipleTaskExecutionAtManyThreads() {
         testTasksExecution(1000, 100);
     }
 
@@ -77,6 +76,9 @@ public class ThreadPoolImplTest {
         assertThat(ids.size(), is(threadPool.getThreadAmount()));
     }
 
+    /**
+     * Parallel map of a function.
+     */
     @Test
     public void testMap() {
         ThreadPoolImpl threadPool = new ThreadPoolImpl(10);

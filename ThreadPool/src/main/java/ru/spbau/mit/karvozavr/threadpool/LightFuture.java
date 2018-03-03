@@ -32,5 +32,5 @@ public interface LightFuture<T> {
      * @param <R>      return value of a function
      * @return new {@link LightFuture} computation, that applies {@code function} to result of computation
      */
-    @NotNull <R> LightFuture<R> thenApply(Function<? super T, ? extends R> function);
+    @NotNull <R> LightFuture<R> thenApply(@NotNull Function<? super T, ? extends R> function);
 }
