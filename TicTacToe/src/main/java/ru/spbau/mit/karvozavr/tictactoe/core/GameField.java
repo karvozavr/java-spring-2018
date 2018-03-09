@@ -22,7 +22,10 @@ public class GameField {
      * @param state new state
      */
     public void setCell(int row, int col, CellType state) {
-        field[row][col] = state;
+        if (field[row][col] == null)
+            field[row][col] = state;
+        else
+            throw new IllegalStateException();
     }
 
     /**
@@ -57,7 +60,7 @@ public class GameField {
         for (int row = 0; row < fieldSize; row++) {
             boolean isWin = true;
             for (int col = 1; col < fieldSize; col++) {
-                if (field[row][col - 1] != field[row][col]) {
+                if (field[row][col] == null || field[row][col - 1] != field[row][col]) {
                     isWin = false;
                     break;
                 }
@@ -74,7 +77,7 @@ public class GameField {
         for (int col = 0; col < fieldSize; col++) {
             boolean isWin = true;
             for (int row = 1; row < fieldSize; row++) {
-                if (field[row - 1][col] != field[row][col]) {
+                if (field[row][col] == null || field[row - 1][col] != field[row][col]) {
                     isWin = false;
                     break;
                 }
@@ -90,7 +93,7 @@ public class GameField {
         // Check diagonals
         boolean isUpperLeft = true;
         for (int i = 1; i < fieldSize; i++) {
-            if (field[i - 1][i - 1] != field[i][i]) {
+            if (field[i][i] == null || field[i - 1][i - 1] != field[i][i]) {
                 isUpperLeft = false;
                 break;
             }
@@ -98,7 +101,7 @@ public class GameField {
 
         boolean isUpperRight = true;
         for (int i = 1; i < fieldSize; i++) {
-            if (field[fieldSize - i - 1][i - 1] != field[fieldSize - i][i]) {
+            if (field[i][fieldSize - i - 1] == null || field[i - 1][fieldSize - i] != field[i][fieldSize - i - 1]) {
                 isUpperRight = false;
                 break;
             }
