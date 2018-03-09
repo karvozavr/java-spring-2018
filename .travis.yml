@@ -3,4 +3,5 @@ sudo: false
 
 env:
   - TEST_DIR=Lazy
+  - TEST_DIR=TicTacToe
 script: cd $TEST_DIR && ./gradlew clean check
