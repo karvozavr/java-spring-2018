@@ -1,0 +1,5 @@
+.field-cell-button {
+    -fx-animated: true;
+    -fx-pref-width: 200;
+    -fx-pref-height: 200;
+}
