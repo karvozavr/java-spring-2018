@@ -3,6 +3,7 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'base'
+apply plugin: 'javafx-gradle-plugin'
 
 sourceCompatibility = 1.8
 
@@ -31,4 +32,9 @@ buildscript {
     }
 }
 
-apply plugin: 'javafx-gradle-plugin'
+jfx {
+    mainClass = 'ru.spbau.mit.karvozavr.tictactoe.ui.TicTacToeApp'
+    vendor = 'karvozavr'
+
+    additionalAppResources = 'src/main/resources'
+}

@@ -7,20 +7,23 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane minHeight="800.0"
-            minWidth="600.0"
+<AnchorPane minHeight="400.0"
+            minWidth="300.0"
             prefHeight="800.0"
             prefWidth="600.0"
             xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.TicTacToeApp">
+            fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController">
     <stylesheets>
         <URL value="@styles/styles.css"/>
     </stylesheets>
 
     <children>
-        <GridPane alignment="CENTER" layoutX="225.0" layoutY="125.0" AnchorPane.bottomAnchor="0.0"
-                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <GridPane alignment="CENTER"
+                  AnchorPane.bottomAnchor="0.0"
+                  AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0"
+                  AnchorPane.topAnchor="0.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="50.0" prefWidth="200.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="50.0" prefWidth="200.0"/>
@@ -28,6 +31,7 @@
 
             </columnConstraints>
             <rowConstraints>
+                <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="200.0" vgrow="SOMETIMES"/>
                 <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="200.0" vgrow="SOMETIMES"/>
                 <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="200.0" vgrow="SOMETIMES"/>
                 <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="200.0" vgrow="SOMETIMES"/>
@@ -45,5 +49,6 @@
                 <Button styleClass="field-cell-button" text="Button9" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
             </children>
         </GridPane>
+
     </children>
 </AnchorPane>
