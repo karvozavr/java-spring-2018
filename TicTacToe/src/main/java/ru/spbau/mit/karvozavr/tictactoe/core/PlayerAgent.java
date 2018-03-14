@@ -17,6 +17,7 @@ public class PlayerAgent extends GameAgent {
     @Override
     public void takeTurn(GameField field) {
         Pair<Integer, Integer> turn = layoutController.getNextTurn();
-        field.setCell(turn.getKey(), turn.getValue(), agentType);
+        if (turn != null)
+            field.setCell(turn.getKey(), turn.getValue(), agentType);
     }
 }

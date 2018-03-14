@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -47,15 +48,16 @@ public class GameLayoutController implements Initializable {
 
     public void onTurnStart() {
         setTurnMessage();
-        fieldGrid.getChildren().forEach(node -> node.setDisable(true));
+        fieldGrid.setDisable(true);
     }
 
     public void onTurnEnd() {
-        fieldGrid.getChildren().forEach(node -> node.setDisable(false));
+        fieldGrid.setDisable(false);
     }
 
     private void setTurnMessage() {
-        currentTurnMessage.setText(String.format("It is %s turn.", gameController.getCurrentPlayer()));
+        Platform.runLater(() ->
+            currentTurnMessage.setText(String.format("It is %s turn.", gameController.getCurrentPlayer())));
     }
 
     public void onFieldUpdate(GameField field) {
@@ -77,16 +79,21 @@ public class GameLayoutController implements Initializable {
                 case X:
                     cell.setText("X");
                     break;
-                default:
-                    cell.setText("");
             }
+
+            cell.setDisable(true);
         });
     }
 
     public void onGameFinished(GameResult gameResult) {
         // TODO
-        fieldGrid.getChildren().forEach(node -> node.setDisable(true));
-        System.out.println(gameResult.toString());
+        Platform.runLater(() -> {
+            fieldGrid.setDisable(true);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(gameResult.toString());
+            alert.showAndWait();
+        });
     }
 
     public synchronized Pair<Integer, Integer> getNextTurn() {
@@ -94,8 +101,7 @@ public class GameLayoutController implements Initializable {
             try {
                 wait();
             } catch (InterruptedException e) {
-                System.err.println("Logic error: unexpected interrupt.");
-                System.exit(1);
+                return null;
             }
         }
 

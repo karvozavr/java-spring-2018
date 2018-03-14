@@ -36,6 +36,9 @@ public class GameController {
     public void startGame() {
         currentPlayer = playerX;
         do {
+            if (Thread.interrupted())
+                return;
+
             if (currentPlayer == playerX) {
                 playerX.takeTurn(field);
                 currentPlayer = playerO;
