@@ -9,7 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
-import ru.spbau.mit.karvozavr.tictactoe.core.*;
+import ru.spbau.mit.karvozavr.tictactoe.core.CellType;
+import ru.spbau.mit.karvozavr.tictactoe.core.GameController;
+import ru.spbau.mit.karvozavr.tictactoe.core.GameField;
+import ru.spbau.mit.karvozavr.tictactoe.core.GameResult;
+import ru.spbau.mit.karvozavr.tictactoe.core.agent.GameAgent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,10 +31,10 @@ public class GameLayoutController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        GameAgent playerX;
-        GameAgent playerO;
-        playerX = new PlayerAgent(CellType.X, this);
-        playerO = new PlayerAgent(CellType.O, this);
+
+    }
+
+    public void newGame(GameAgent playerX, GameAgent playerO) {
         gameController = new GameController(this, playerX, playerO);
     }
 
@@ -110,3 +114,4 @@ public class GameLayoutController implements Initializable {
         return result;
     }
 }
+

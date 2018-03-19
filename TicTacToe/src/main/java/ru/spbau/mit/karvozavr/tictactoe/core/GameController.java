@@ -1,5 +1,6 @@
 package ru.spbau.mit.karvozavr.tictactoe.core;
 
+import ru.spbau.mit.karvozavr.tictactoe.core.agent.GameAgent;
 import ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController;
 
 /**
