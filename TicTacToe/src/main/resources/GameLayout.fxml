@@ -4,49 +4,65 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
+<?import javafx.scene.layout.VBox?>
 <AnchorPane minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController">
     <stylesheets>
         <URL value="@styles/styles.css"/>
     </stylesheets>
+    <BorderPane AnchorPane.rightAnchor="0"
+                AnchorPane.leftAnchor="0"
+                AnchorPane.topAnchor="0"
+                AnchorPane.bottomAnchor="0">
+        <top>
+            <VBox BorderPane.alignment="TOP_CENTER">
+                <fx:include fx:id="menuLayout" source="MainMenuLayout.fxml"/>
+                <Label fx:id="currentTurnLabel" styleClass="currentTurnLabel" text="Some Text" alignment="CENTER"/>
+            </VBox>
+        </top>
 
-    <fx:include source="MainMenuLayout.fxml"/>
+        <center>
+            <GridPane fx:id="fieldGrid" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="50.0" prefWidth="200.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="50.0" prefWidth="200.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="50.0" prefWidth="200.0"/>
 
-    <Label fx:id="currentTurnMessage" text="Turn" alignment="TOP_CENTER"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="200.0" vgrow="SOMETIMES"/>
+                    <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="200.0" vgrow="SOMETIMES"/>
+                    <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="200.0" vgrow="SOMETIMES"/>
+                </rowConstraints>
 
-    <GridPane fx:id="fieldGrid"
-              alignment="CENTER"
-              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="50.0" prefWidth="200.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="50.0" prefWidth="200.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="50.0" prefWidth="200.0"/>
-
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="200.0" vgrow="SOMETIMES"/>
-            <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="200.0" vgrow="SOMETIMES"/>
-            <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="200.0" vgrow="SOMETIMES"/>
-        </rowConstraints>
-
-        <children>
-            <Button styleClass="field-cell-button" onAction="#onFieldButtonPressed" userData="0" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <Button styleClass="field-cell-button" onAction="#onFieldButtonPressed" userData="1" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <Button styleClass="field-cell-button" onAction="#onFieldButtonPressed" userData="2" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <Button styleClass="field-cell-button" onAction="#onFieldButtonPressed" userData="3" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-            <Button styleClass="field-cell-button" onAction="#onFieldButtonPressed" userData="4" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            <Button styleClass="field-cell-button" onAction="#onFieldButtonPressed" userData="5" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-            <Button styleClass="field-cell-button" onAction="#onFieldButtonPressed" userData="6" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-            <Button styleClass="field-cell-button" onAction="#onFieldButtonPressed" userData="7" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-            <Button styleClass="field-cell-button" onAction="#onFieldButtonPressed" userData="8" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-        </children>
-    </GridPane>
-
+                <children>
+                    <Button onAction="#onFieldButtonPressed" styleClass="field-cell-button" userData="0"
+                            GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <Button onAction="#onFieldButtonPressed" styleClass="field-cell-button" userData="1"
+                            GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <Button onAction="#onFieldButtonPressed" styleClass="field-cell-button" userData="2"
+                            GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <Button onAction="#onFieldButtonPressed" styleClass="field-cell-button" userData="3"
+                            GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <Button onAction="#onFieldButtonPressed" styleClass="field-cell-button" userData="4"
+                            GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <Button onAction="#onFieldButtonPressed" styleClass="field-cell-button" userData="5"
+                            GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    <Button onAction="#onFieldButtonPressed" styleClass="field-cell-button" userData="6"
+                            GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                    <Button onAction="#onFieldButtonPressed" styleClass="field-cell-button" userData="7"
+                            GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                    <Button onAction="#onFieldButtonPressed" styleClass="field-cell-button" userData="8"
+                            GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                </children>
+            </GridPane>
+        </center>
+    </BorderPane>
 
 </AnchorPane>

@@ -1,8 +1,9 @@
 package ru.spbau.mit.karvozavr.tictactoe.core;
 
 import org.junit.Test;
+import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
+import ru.spbau.mit.karvozavr.tictactoe.core.util.GameResult;
 
-import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
@@ -14,7 +15,7 @@ public class GameFieldTest {
         GameField field = new GameField();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                assertThat(field.getCell(i, j), is(nullValue()));
+                assertThat(field.getCell(i, j), is(CellType.EMPTY));
             }
         }
     }
@@ -186,6 +187,6 @@ public class GameFieldTest {
         field.setCell(2, 1, CellType.O);
         field.setCell(2, 2, CellType.X);
 
-        assertThat(field.checkForGameEnd(), is(nullValue()));
+        assertThat(field.checkForGameEnd(), is(GameResult.NOT_FINISHED));
     }
 }

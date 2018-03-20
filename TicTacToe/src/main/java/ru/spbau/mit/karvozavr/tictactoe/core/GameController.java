@@ -1,6 +1,7 @@
 package ru.spbau.mit.karvozavr.tictactoe.core;
 
 import ru.spbau.mit.karvozavr.tictactoe.core.agent.GameAgent;
+import ru.spbau.mit.karvozavr.tictactoe.core.util.GameResult;
 import ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController;
 
 /**
@@ -15,29 +16,31 @@ public class GameController {
     private GameAgent currentPlayer;
     private boolean isGameEnded = false;
     private GameResult gameResult;
+    private Thread gameThread;
 
     public GameController(GameLayoutController layoutController, GameAgent playerX, GameAgent playerO) {
         field = new GameField();
         this.layoutController = layoutController;
         this.playerX = playerX;
         this.playerO = playerO;
-        // FIXME thread kill
-        Thread gameThread = new Thread(this::startGame);
-        gameThread.start();
-    }
 
-    public GameField getField() {
-        return field;
+        gameThread = new Thread(this::startGame);
+        gameThread.start();
     }
 
     public GameAgent getCurrentPlayer() {
         return currentPlayer;
     }
 
+    public void interruptGame() {
+        gameThread.interrupt();
+    }
+
     public void startGame() {
         currentPlayer = playerX;
+        layoutController.onFieldUpdate(field);
         do {
-            if (Thread.interrupted())
+            if (Thread.currentThread().isInterrupted())
                 return;
 
             if (currentPlayer == playerX) {
@@ -57,7 +60,7 @@ public class GameController {
         if (isGameEnded)
             return gameResult;
         gameResult = field.checkForGameEnd();
-        if (gameResult != null)
+        if (gameResult != GameResult.NOT_FINISHED)
             isGameEnded = true;
         return gameResult;
     }

@@ -1,17 +1,23 @@
 package ru.spbau.mit.karvozavr.tictactoe.core;
 
+import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
+import ru.spbau.mit.karvozavr.tictactoe.core.util.GameResult;
+
 /**
  * Tic-Tac-Toe game field.
  */
 public class GameField {
 
-    public static final int fieldSize = 3;
+    private static final int fieldSize = 3;
     private CellType[][] field = new CellType[fieldSize][fieldSize];
 
+    /**
+     * Construct empty game field.
+     */
     public GameField() {
         for (int row = 0; row < fieldSize; row++)
             for (int col = 0; col < fieldSize; col++)
-                field[row][col] = null;
+                field[row][col] = CellType.EMPTY;
     }
 
     /**
@@ -22,7 +28,7 @@ public class GameField {
      * @param state new state
      */
     public void setCell(int row, int col, CellType state) {
-        if (field[row][col] == null)
+        if (field[row][col] == CellType.EMPTY)
             field[row][col] = state;
         else
             throw new IllegalStateException();
@@ -44,7 +50,7 @@ public class GameField {
 
         for (int row = 0; row < fieldSize; row++)
             for (int col = 0; col < fieldSize; col++)
-                filled += field[row][col] != null ? 1 : 0;
+                filled += field[row][col] != CellType.EMPTY ? 1 : 0;
 
         return filled == fieldSize * fieldSize;
     }
@@ -52,7 +58,7 @@ public class GameField {
     /**
      * Check if the game ended.
      *
-     * @return result of a game or null if it's not ended
+     * @return result of a game (or GameResult.NOT_FINISHED if game is not finished)
      */
     public GameResult checkForGameEnd() {
 
@@ -60,7 +66,7 @@ public class GameField {
         for (int row = 0; row < fieldSize; row++) {
             boolean isWin = true;
             for (int col = 1; col < fieldSize; col++) {
-                if (field[row][col] == null || field[row][col - 1] != field[row][col]) {
+                if (field[row][col] == CellType.EMPTY || field[row][col - 1] != field[row][col]) {
                     isWin = false;
                     break;
                 }
@@ -77,7 +83,7 @@ public class GameField {
         for (int col = 0; col < fieldSize; col++) {
             boolean isWin = true;
             for (int row = 1; row < fieldSize; row++) {
-                if (field[row][col] == null || field[row - 1][col] != field[row][col]) {
+                if (field[row][col] == CellType.EMPTY || field[row - 1][col] != field[row][col]) {
                     isWin = false;
                     break;
                 }
@@ -93,7 +99,7 @@ public class GameField {
         // Check diagonals
         boolean isUpperLeft = true;
         for (int i = 1; i < fieldSize; i++) {
-            if (field[i][i] == null || field[i - 1][i - 1] != field[i][i]) {
+            if (field[i][i] == CellType.EMPTY || field[i - 1][i - 1] != field[i][i]) {
                 isUpperLeft = false;
                 break;
             }
@@ -101,7 +107,7 @@ public class GameField {
 
         boolean isUpperRight = true;
         for (int i = 1; i < fieldSize; i++) {
-            if (field[i][fieldSize - i - 1] == null || field[i - 1][fieldSize - i] != field[i][fieldSize - i - 1]) {
+            if (field[i][fieldSize - i - 1] == CellType.EMPTY || field[i - 1][fieldSize - i] != field[i][fieldSize - i - 1]) {
                 isUpperRight = false;
                 break;
             }
@@ -119,6 +125,6 @@ public class GameField {
             return GameResult.DRAW;
 
         // The game hasn't ended
-        return null;
+        return GameResult.NOT_FINISHED;
     }
 }

@@ -4,3 +4,8 @@
     -fx-pref-height: 200;
     -fx-font-size: 50pt;
 }
+
+.currentTurnLabel {
+    -fx-font-scale: 20;
+    -fx-alignment: center;
+}

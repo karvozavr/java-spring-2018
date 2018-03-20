@@ -1,6 +1,6 @@
 package ru.spbau.mit.karvozavr.tictactoe.core.agent;
 
-import ru.spbau.mit.karvozavr.tictactoe.core.CellType;
+import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
 import ru.spbau.mit.karvozavr.tictactoe.core.GameField;
 import ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController;
 
@@ -16,16 +16,19 @@ public class RandomBotAgent extends GameAgent {
 
     @Override
     public void takeTurn(GameField field) {
+        layoutController.onTurnStart();
+
         boolean success = false;
 
         while (!success) {
             int turn = random.nextInt(9);
-            System.err.println(turn);
 
-            if (field.getCell(turn / 3, turn % 3) == null) {
+            if (field.getCell(turn / 3, turn % 3) == CellType.EMPTY) {
                 field.setCell(turn / 3, turn % 3, agentType);
                 success = true;
             }
         }
+
+        layoutController.onTurnEnd();
     }
 }

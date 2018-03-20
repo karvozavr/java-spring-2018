@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 
-
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<VBox id="vbox" prefHeight="400" prefWidth="800"
+<VBox id="vbox"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController">
+      fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.layout.MainMenuLayoutController">
     <MenuBar fx:id="menuBar" onKeyPressed="#handleKeyInput">
         <menus>
             <Menu text="Game">
                 <items>
                     <MenuItem text="New game" onAction="#startNewGame"/>
-                    <MenuItem text="Restart"/>
-                    <SeparatorMenuItem  />
-                    <MenuItem text="Exit"/>
+                    <MenuItem fx:id="restartGameButton" text="Restart" onAction="#restartGame"/>
+                    <SeparatorMenuItem/>
+                    <MenuItem text="Exit" onAction="#exitGame"/>
                 </items>
             </Menu>
             <Menu text="Info">
                 <items>
-                    <MenuItem text="Statistics"/>
+                    <MenuItem text="Statistics" onAction="#showStats"/>
                 </items>
             </Menu>
         </menus>
