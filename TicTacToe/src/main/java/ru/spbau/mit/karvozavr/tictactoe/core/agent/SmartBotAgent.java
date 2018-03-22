@@ -7,6 +7,9 @@ import ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * {@link GameAgent} instance: smart bot with heuristic based behaviour.
+ */
 public class SmartBotAgent extends GameAgent {
 
     private static final List<Integer> interests = Arrays.asList(4, 0, 2, 6, 8);
@@ -43,6 +46,12 @@ public class SmartBotAgent extends GameAgent {
         layoutController.onTurnEnd();
     }
 
+    /**
+     * Finds the best turn due to heuristics.
+     *
+     * @param field game field
+     * @return turn
+     */
     private int findBestTurn(GameField field) {
         {
             int turn = getPriorityTurn(field, agentType);

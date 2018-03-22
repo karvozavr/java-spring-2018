@@ -11,17 +11,23 @@ import ru.spbau.mit.karvozavr.tictactoe.core.agent.GameAgentFactory;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameSetupController implements Initializable {
+/**
+ * Game setup layout controller.
+ */
+public class GameSetupLayoutController implements Initializable {
 
+    /**
+     * Agent selectors' content.
+     */
     private static final ObservableList<String> agents =
         FXCollections.observableArrayList(GameAgentFactory.gameAgentTypes.keySet());
 
     @FXML
-    public ChoiceBox<String> playerX;
+    private ChoiceBox<String> playerX;
     @FXML
-    public ChoiceBox<String> playerO;
+    private ChoiceBox<String> playerO;
 
-    private MainMenuLayoutController mainController;
+    private MainLayoutController mainController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -31,10 +37,20 @@ public class GameSetupController implements Initializable {
         playerO.setValue(agents.get(0));
     }
 
-    public void injectMainController(MainMenuLayoutController mainController) {
+    /**
+     * Injects {@link MainLayoutController} dependency.
+     *
+     * @param mainController dependency object
+     */
+    public void injectMainController(MainLayoutController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Handles game setup user input.
+     *
+     * @param actionEvent event
+     */
     public void createGameSetup(ActionEvent actionEvent) {
         mainController.onGameSetupReady(playerX.getValue(), playerO.getValue());
     }

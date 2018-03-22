@@ -6,6 +6,9 @@ import ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController;
 
 import java.util.Random;
 
+/**
+ * {@link GameAgent} instance: bot with randomized behaviour.
+ */
 public class RandomBotAgent extends GameAgent {
 
     private final Random random = new Random();

@@ -8,8 +8,14 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Factory to create Tic-Tac-Toe game agents.
+ */
 public class GameAgentFactory {
 
+    /**
+     * Map: agent type string -> agent type class.
+     */
     public static final Map<String, Class<? extends GameAgent>> gameAgentTypes;
 
     static {
@@ -20,24 +26,20 @@ public class GameAgentFactory {
         gameAgentTypes = Collections.unmodifiableMap(tempMap);
     }
 
-    public static PlayerAgent playerAgent(CellType type, GameLayoutController layoutController) {
-        return new PlayerAgent(type, layoutController);
-    }
-
-    public static RandomBotAgent randomBotAgent(CellType type, GameLayoutController layoutController) {
-        return new RandomBotAgent(type, layoutController);
-    }
-
-    public static SmartBotAgent smartBotAgent(CellType type, GameLayoutController layoutController) {
-        return new SmartBotAgent(type, layoutController);
-    }
-
-    public static GameAgent agent(String agentName, CellType type, GameLayoutController layoutController) {
+    /**
+     * Creates agent of given type.
+     *
+     * @param agentType        string: agent type
+     * @param playerType       player type X or O
+     * @param layoutController game layout controller to bind agent with
+     * @return new agent
+     */
+    public static GameAgent agent(String agentType, CellType playerType, GameLayoutController layoutController) {
         try {
             return gameAgentTypes
-                .get(agentName)
+                .get(agentType)
                 .getDeclaredConstructor(CellType.class, GameLayoutController.class)
-                .newInstance(type, layoutController);
+                .newInstance(playerType, layoutController);
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
             throw new RuntimeException("Invalid agent instantiation!", e);
         }

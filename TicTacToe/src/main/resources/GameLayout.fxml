@@ -17,7 +17,7 @@
     <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
         <top>
             <VBox alignment="CENTER">
-                <!--<fx:include fx:id="menuLayout" source="MainMenuLayout.fxml"/>-->
+                <!--<fx:include fx:id="menuLayout" source="MainLayout.fxml"/>-->
                 <Label fx:id="currentTurnLabel" alignment="CENTER" styleClass="currentTurnLabel" text="Some Text" />
             </VBox>
         </top>

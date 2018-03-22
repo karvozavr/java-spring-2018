@@ -5,6 +5,9 @@ import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
 import ru.spbau.mit.karvozavr.tictactoe.core.GameField;
 import ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController;
 
+/**
+ * {@link GameAgent} instance implementing real human player behaviour.
+ */
 public class PlayerAgent extends GameAgent {
 
     public PlayerAgent(CellType agentType, GameLayoutController layoutController) {
@@ -23,8 +26,8 @@ public class PlayerAgent extends GameAgent {
 
     @Override
     public void takeTurn(GameField field) {
-        Pair<Integer, Integer> turn = layoutController.getNextTurn();
+        Integer turn = layoutController.getNextTurn();
         if (turn != null)
-            field.setCell(turn.getKey(), turn.getValue(), agentType);
+            field.setCell(turn / 3, turn % 3, agentType);
     }
 }

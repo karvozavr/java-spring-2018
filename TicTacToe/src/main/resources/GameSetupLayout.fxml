@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="CENTER" prefHeight="154.0" prefWidth="328.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameSetupController">
+<GridPane alignment="CENTER" prefHeight="154.0" prefWidth="328.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameSetupLayoutController">
 
     <columnConstraints>
         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="100.0" minWidth="80.0" prefWidth="80.0" />

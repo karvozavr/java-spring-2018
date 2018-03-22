@@ -1,7 +1,8 @@
 package ru.spbau.mit.karvozavr.tictactoe.core.util;
 
-import java.io.Serializable;
-
+/**
+ * Tic-Tac-Toe game result.
+ */
 public enum GameResult {
     X_WIN, O_WIN, DRAW, NOT_FINISHED;
 

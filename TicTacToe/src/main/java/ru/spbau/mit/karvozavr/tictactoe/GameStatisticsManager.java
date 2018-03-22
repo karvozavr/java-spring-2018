@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Tic-Tac-Toe game statistics manager.
+ */
 public class GameStatisticsManager {
 
     private static List<GameStats> statistics;
@@ -27,6 +30,11 @@ public class GameStatisticsManager {
         return statistics;
     }
 
+    /**
+     * Makes game info record.
+     *
+     * @param gameSetup game setup
+     */
     public static void writeGame(GameSetup gameSetup) {
         statistics.add(new GameStats(
             gameSetup.getGameAgentX().toString(),
@@ -39,6 +47,9 @@ public class GameStatisticsManager {
         );
     }
 
+    /**
+     * Saves statistics to file.
+     */
     private static void flushStatistics() {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(fileName))) {
             objectOutputStream.writeObject(statistics);
@@ -47,10 +58,16 @@ public class GameStatisticsManager {
         }
     }
 
+    /**
+     * App termination callback.
+     */
     public static void onAppStop() {
         flushStatistics();
     }
 
+    /**
+     * Single game statistics data class.
+     */
     public static class GameStats implements Serializable {
         private final String playerX;
         private final String playerO;

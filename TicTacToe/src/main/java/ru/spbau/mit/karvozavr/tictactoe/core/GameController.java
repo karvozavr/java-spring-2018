@@ -18,13 +18,21 @@ public class GameController {
     private GameResult gameResult;
     private Thread gameThread;
 
+    /**
+     * Creates GameController, starts new game in new thread.
+     *
+     * @param layoutController game layout controller
+     * @param playerX          player X agent
+     * @param playerO          player O agent
+     */
     public GameController(GameLayoutController layoutController, GameAgent playerX, GameAgent playerO) {
         field = new GameField();
         this.layoutController = layoutController;
         this.playerX = playerX;
         this.playerO = playerO;
 
-        gameThread = new Thread(this::startGame);
+        // Start game logic in new Thread
+        gameThread = new Thread(this::gameCycle);
         gameThread.start();
     }
 
@@ -32,13 +40,19 @@ public class GameController {
         return currentPlayer;
     }
 
+    /**
+     * Ends game, interrupting game logic thread.
+     */
     public void interruptGame() {
         gameThread.interrupt();
     }
 
-    public void startGame() {
+    /**
+     * Tic-Tac-Toe game cycle.
+     */
+    private void gameCycle() {
         currentPlayer = playerX;
-        layoutController.onFieldUpdate(field);
+        layoutController.drawField(field);
         do {
             if (Thread.currentThread().isInterrupted())
                 return;
@@ -50,12 +64,17 @@ public class GameController {
                 playerO.takeTurn(field);
                 currentPlayer = playerX;
             }
-            layoutController.onFieldUpdate(field);
+            layoutController.drawField(field);
             getGameResult();
         } while (!isGameEnded);
         layoutController.onGameFinished(getGameResult());
     }
 
+    /**
+     * Calculates current game state.
+     *
+     * @return game result
+     */
     private GameResult getGameResult() {
         if (isGameEnded)
             return gameResult;
@@ -63,9 +82,5 @@ public class GameController {
         if (gameResult != GameResult.NOT_FINISHED)
             isGameEnded = true;
         return gameResult;
-    }
-
-    public boolean isGameEnded() {
-        return isGameEnded;
     }
 }

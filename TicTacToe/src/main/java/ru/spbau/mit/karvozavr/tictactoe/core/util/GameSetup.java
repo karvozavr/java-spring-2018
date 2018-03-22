@@ -17,6 +17,12 @@ public class GameSetup {
     private GameResult gameResult = GameResult.NOT_FINISHED;
     private LocalDateTime date;
 
+    /**
+     * Constructs new game setup with given agents.
+     *
+     * @param gameAgentX player X agent
+     * @param gameAgentO player O agent
+     */
     public GameSetup(GameAgent gameAgentX, GameAgent gameAgentO) {
         this.gameAgentX = gameAgentX;
         this.gameAgentO = gameAgentO;
@@ -42,6 +48,9 @@ public class GameSetup {
         return date;
     }
 
+    /**
+     * Saves the result of the game
+     */
     public void saveGameStatistics() {
         date = LocalDateTime.now();
         GameStatisticsManager.writeGame(this);
