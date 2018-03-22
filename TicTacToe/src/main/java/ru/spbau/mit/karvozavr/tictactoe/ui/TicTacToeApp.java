@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.spbau.mit.karvozavr.tictactoe.GameStatisticsManager;
 
 public class TicTacToeApp extends Application {
 
@@ -12,6 +13,12 @@ public class TicTacToeApp extends Application {
     private Scene gameScene;
 
     private Stage primaryStage;
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        GameStatisticsManager.onAppStop();
+    }
 
     @Override
     public void start(Stage stage) throws Exception {

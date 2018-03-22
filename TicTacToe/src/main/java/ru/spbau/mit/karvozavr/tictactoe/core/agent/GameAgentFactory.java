@@ -16,6 +16,7 @@ public class GameAgentFactory {
         Map<String, Class<? extends GameAgent>> tempMap = new TreeMap<>();
         tempMap.put("Human", PlayerAgent.class);
         tempMap.put("Random bot", RandomBotAgent.class);
+        tempMap.put("Smart bot", SmartBotAgent.class);
         gameAgentTypes = Collections.unmodifiableMap(tempMap);
     }
 
@@ -25,6 +26,10 @@ public class GameAgentFactory {
 
     public static RandomBotAgent randomBotAgent(CellType type, GameLayoutController layoutController) {
         return new RandomBotAgent(type, layoutController);
+    }
+
+    public static SmartBotAgent smartBotAgent(CellType type, GameLayoutController layoutController) {
+        return new SmartBotAgent(type, layoutController);
     }
 
     public static GameAgent agent(String agentName, CellType type, GameLayoutController layoutController) {

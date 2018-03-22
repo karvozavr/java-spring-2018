@@ -4,6 +4,8 @@ import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
 import ru.spbau.mit.karvozavr.tictactoe.core.GameField;
 import ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController;
 
+import java.io.Serializable;
+
 public abstract class GameAgent {
 
     protected final CellType agentType;
@@ -13,6 +15,8 @@ public abstract class GameAgent {
         this.agentType = agentType;
         this.layoutController = layoutController;
     }
+
+    public abstract String getTypeName();
 
     public abstract void takeTurn(GameField field);
 }

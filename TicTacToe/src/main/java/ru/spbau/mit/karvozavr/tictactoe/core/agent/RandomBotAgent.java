@@ -15,8 +15,13 @@ public class RandomBotAgent extends GameAgent {
     }
 
     @Override
+    public String getTypeName() {
+        return agentType.toString();
+    }
+
+    @Override
     public String toString() {
-        return "Random bot" + agentType;
+        return "Random bot";
     }
 
     @Override

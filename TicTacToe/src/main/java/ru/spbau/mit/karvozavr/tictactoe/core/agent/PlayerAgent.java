@@ -12,8 +12,13 @@ public class PlayerAgent extends GameAgent {
     }
 
     @Override
+    public String getTypeName() {
+        return agentType.toString();
+    }
+
+    @Override
     public String toString() {
-        return "Human " + agentType;
+        return "Human";
     }
 
     @Override

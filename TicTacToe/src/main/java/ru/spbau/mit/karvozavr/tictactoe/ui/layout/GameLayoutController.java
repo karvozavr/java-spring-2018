@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
+import ru.spbau.mit.karvozavr.tictactoe.GameStatisticsManager;
 import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
 import ru.spbau.mit.karvozavr.tictactoe.core.GameController;
 import ru.spbau.mit.karvozavr.tictactoe.core.GameField;
@@ -60,13 +61,13 @@ public class GameLayoutController implements Initializable {
 
     private void onGameStart() {
         Platform.runLater(() -> {
-            setTurnMessage(String.format("It is %s turn.", gameController.getCurrentPlayer()));
+            setTurnMessage(String.format("It is %s turn.", gameController.getCurrentPlayer().getTypeName()));
         });
     }
 
     public void onTurnStart() {
         Platform.runLater(() -> {
-            setTurnMessage(String.format("It is %s turn.", gameController.getCurrentPlayer()));
+            setTurnMessage(String.format("It is %s turn.", gameController.getCurrentPlayer().getTypeName()));
             fieldGrid.setDisable(true);
         });
     }
@@ -112,7 +113,6 @@ public class GameLayoutController implements Initializable {
 
     public void onGameFinished(GameResult gameResult) {
         Platform.runLater(() -> {
-            currentGameSetup.setGameResult(gameResult);
             fieldGrid.getChildren().forEach(cell -> cell.setDisable(true));
             setTurnMessage(String.format("Game finished: %s", gameResult.toString()));
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -120,6 +120,8 @@ public class GameLayoutController implements Initializable {
             alert.setHeaderText(gameResult.toString());
             alert.showAndWait();
         });
+        currentGameSetup.setGameResult(gameResult);
+        currentGameSetup.saveGameStatistics();
     }
 
     public synchronized Pair<Integer, Integer> getNextTurn() {

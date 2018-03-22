@@ -1,5 +1,7 @@
 package ru.spbau.mit.karvozavr.tictactoe.core.util;
 
+import java.io.Serializable;
+
 public enum GameResult {
     X_WIN, O_WIN, DRAW, NOT_FINISHED;
 

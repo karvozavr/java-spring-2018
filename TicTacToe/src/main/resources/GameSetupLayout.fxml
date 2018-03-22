@@ -24,8 +24,8 @@
     <children>
         <Label text="Player X:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <Label text="Player Y:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <ChoiceBox fx:id="playerX" prefWidth="150.0" value="Select player" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <ChoiceBox fx:id="playerO" prefWidth="150.0" value="Select player" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <ChoiceBox fx:id="playerX" prefWidth="150.0" value="Select player" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <ChoiceBox fx:id="playerO" prefWidth="150.0" value="Select player" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <Button defaultButton="true" onAction="#createGameSetup" prefWidth="120" text="Start" GridPane.columnIndex="1" GridPane.rowIndex="2" />
     </children>
 
