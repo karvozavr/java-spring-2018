@@ -26,15 +26,9 @@ public class GameLayoutController implements Initializable {
     private GridPane fieldGrid;
     @FXML
     private Label currentTurnLabel;
-    /*@FXML
-    public VBox menuLayout;
-    @FXML
-    private MainMenuLayoutController menuLayoutController;*/
 
     private GameController gameController;
-
     private Pair<Integer, Integer> lastTurn;
-
     private GameSetup currentGameSetup;
 
     @FXML
@@ -117,7 +111,6 @@ public class GameLayoutController implements Initializable {
     }
 
     public void onGameFinished(GameResult gameResult) {
-        // TODO
         Platform.runLater(() -> {
             currentGameSetup.setGameResult(gameResult);
             fieldGrid.getChildren().forEach(cell -> cell.setDisable(true));
