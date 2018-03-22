@@ -26,11 +26,10 @@ public class GameLayoutController implements Initializable {
     private GridPane fieldGrid;
     @FXML
     private Label currentTurnLabel;
-
-    @FXML
+    /*@FXML
     public VBox menuLayout;
     @FXML
-    private MainMenuLayoutController menuLayoutController;
+    private MainMenuLayoutController menuLayoutController;*/
 
     private GameController gameController;
 
@@ -52,7 +51,7 @@ public class GameLayoutController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        menuLayoutController.injectGameLayoutController(this);
+        //menuLayoutController.injectGameLayoutController(this);
     }
 
     public void newGame(GameSetup gameSetup) {

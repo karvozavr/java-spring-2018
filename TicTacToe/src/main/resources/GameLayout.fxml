@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <?import javafx.scene.layout.VBox?>
-<AnchorPane minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController">
+<AnchorPane
+        xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController">
     <stylesheets>
         <URL value="@styles/styles.css"/>
     </stylesheets>
@@ -21,8 +21,8 @@
                 AnchorPane.topAnchor="0"
                 AnchorPane.bottomAnchor="0">
         <top>
-            <VBox BorderPane.alignment="TOP_CENTER">
-                <fx:include fx:id="menuLayout" source="MainMenuLayout.fxml"/>
+            <VBox alignment="CENTER">
+                <!--<fx:include fx:id="menuLayout" source="MainMenuLayout.fxml"/>-->
                 <Label fx:id="currentTurnLabel" styleClass="currentTurnLabel" text="Some Text" alignment="CENTER"/>
             </VBox>
         </top>

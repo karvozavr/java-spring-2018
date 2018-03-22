@@ -26,7 +26,7 @@ public class TicTacToeApp extends Application {
         primaryStage.setTitle("Tic Tac Toe");
         primaryStage.setMinHeight(800);
         primaryStage.setMinWidth(600);
-        primaryStage.setScene(gameScene);
+        primaryStage.setScene(mainMenuScene);
         primaryStage.show();
     }
 

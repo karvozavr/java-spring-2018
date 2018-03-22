@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
-<VBox id="vbox"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.layout.MainMenuLayoutController">
-    <MenuBar fx:id="menuBar" onKeyPressed="#handleKeyInput">
-        <menus>
-            <Menu text="Game">
-                <items>
-                    <MenuItem text="New game" onAction="#startNewGame"/>
-                    <MenuItem fx:id="restartGameButton" text="Restart" onAction="#restartGame"/>
-                    <SeparatorMenuItem/>
-                    <MenuItem text="Exit" onAction="#exitGame"/>
-                </items>
-            </Menu>
-            <Menu text="Info">
-                <items>
-                    <MenuItem text="Statistics" onAction="#showStats"/>
-                </items>
-            </Menu>
-        </menus>
-    </MenuBar>
-</VBox>
+<?import javafx.scene.layout.*?>
+<BorderPane id="vbox" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.spbau.mit.karvozavr.tictactoe.ui.layout.MainMenuLayoutController">
+
+    <top>
+        <MenuBar fx:id="menuBar" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <menus>
+                <Menu text="Game">
+                    <items>
+                        <MenuItem onAction="#startNewGame" text="New game"/>
+                        <MenuItem fx:id="restartGameButton" onAction="#restartGame" text="Restart game" disable="true"/>
+                        <SeparatorMenuItem/>
+                        <MenuItem onAction="#exitGame" text="Exit"/>
+                    </items>
+                </Menu>
+                <Menu text="Info">
+                    <items>
+                        <MenuItem onAction="#showStats" text="Statistics"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+
+    <center>
+        <BorderPane fx:id="mainView" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <center>
+                <Label text="Go to 'Game->New game' to start the game."/>
+            </center>
+        </BorderPane>
+    </center>
+</BorderPane>

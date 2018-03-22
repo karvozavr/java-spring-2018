@@ -15,6 +15,11 @@ public class RandomBotAgent extends GameAgent {
     }
 
     @Override
+    public String toString() {
+        return "Random bot" + agentType;
+    }
+
+    @Override
     public void takeTurn(GameField field) {
         layoutController.onTurnStart();
 

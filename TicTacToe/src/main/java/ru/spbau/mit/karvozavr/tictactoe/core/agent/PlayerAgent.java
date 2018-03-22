@@ -13,7 +13,7 @@ public class PlayerAgent extends GameAgent {
 
     @Override
     public String toString() {
-        return agentType.toString();
+        return "Human " + agentType;
     }
 
     @Override

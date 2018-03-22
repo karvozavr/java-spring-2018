@@ -2,17 +2,17 @@ package ru.spbau.mit.karvozavr.tictactoe.ui.layout;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.MenuItem;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import ru.spbau.mit.karvozavr.tictactoe.core.agent.GameAgentFactory;
 import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
-import ru.spbau.mit.karvozavr.tictactoe.core.agent.PlayerAgent;
-import ru.spbau.mit.karvozavr.tictactoe.core.agent.RandomBotAgent;
 import ru.spbau.mit.karvozavr.tictactoe.core.util.GameSetup;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -20,30 +20,38 @@ import java.util.ResourceBundle;
 public class MainMenuLayoutController implements Initializable {
 
     @FXML
-    public MenuItem restartGameButton;
+    private BorderPane mainView;
+    @FXML
+    private MenuBar menuBar;
+    @FXML
+    private MenuItem restartGameButton;
 
     private GameLayoutController gameLayoutController;
-    private volatile GameSetup currentGameSetup;
+    private GameSetup currentGameSetup;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        restartGameButton.setDisable(true);
-    }
 
-    public void injectGameLayoutController(GameLayoutController gameLayoutController) {
-        this.gameLayoutController = gameLayoutController;
-    }
-
-    public void handleKeyInput(KeyEvent keyEvent) {
     }
 
     public void startNewGame(ActionEvent actionEvent) {
-        currentGameSetup = new GameSetup(new PlayerAgent(CellType.X, gameLayoutController), new RandomBotAgent(CellType.O, gameLayoutController));
+        GameSetupController setupController = (GameSetupController) setMainView("/GameSetupLayout.fxml");
+        setupController.injectMainController(this);
+    }
+
+    public void onGameSetupReady(String playerX, String playerO) {
         restartGameButton.setDisable(false);
+        gameLayoutController = (GameLayoutController) setMainView("/GameLayout.fxml");
+        currentGameSetup = new GameSetup(
+            GameAgentFactory.agent(playerX, CellType.X, gameLayoutController),
+            GameAgentFactory.agent(playerO, CellType.O, gameLayoutController)
+        );
+
         gameLayoutController.newGame(currentGameSetup);
     }
 
     public void restartGame(ActionEvent actionEvent) {
+        //gameLayoutController = (GameLayoutController) setMainView("/GameLayout.fxml");
         gameLayoutController.newGame(currentGameSetup);
     }
 
@@ -57,6 +65,17 @@ public class MainMenuLayoutController implements Initializable {
     }
 
     public void showStats(ActionEvent actionEvent) {
-        // TODO
+        restartGameButton.setDisable(true);
+    }
+
+    private Object setMainView(String name) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(name));
+            Node gameSetupLayout = fxmlLoader.load();
+            mainView.setCenter(gameSetupLayout);
+            return fxmlLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException("Internal error: failed to load FXML resources.", e);
+        }
     }
 }
