@@ -1,6 +1,7 @@
 package ru.spbau.mit.karvozavr.md5_filehash;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,9 +9,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
+/**
+ * Util class to calculate MD5 hash in single thread.
+ */
 public class MD5CheckSumSingleThread {
 
-    public static String md5CheckSum(String fileName) throws IOException {
+    /**
+     * Calculates MD5 hash.
+     *
+     * @param fileName name of file or directory
+     * @return hex MD5 hash
+     * @throws IOException if failed to perform file operations
+     */
+    @NotNull
+    public static String md5CheckSum(@NotNull String fileName) throws IOException {
         Path file = Paths.get(fileName);
         try {
             return md5hex(file);
@@ -23,7 +35,14 @@ public class MD5CheckSumSingleThread {
         }
     }
 
-    private static String md5hex(Path file) {
+    /**
+     * Calculates MD5 hash.
+     *
+     * @param file file or directory
+     * @return hex MD5 hash
+     */
+    @NotNull
+    private static String md5hex(@NotNull Path file) {
         System.out.println(file);
         try {
             if (Files.isDirectory(file)) {

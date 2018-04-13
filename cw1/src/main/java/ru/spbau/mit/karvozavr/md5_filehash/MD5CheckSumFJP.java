@@ -1,6 +1,7 @@
 package ru.spbau.mit.karvozavr.md5_filehash;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,14 +14,29 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 
+/**
+ * Util class to calculate MD5 hash using ForkJoinPool.
+ */
 public class MD5CheckSumFJP {
 
-    public static String md5CheckSum(String fileName) throws ExecutionException, InterruptedException {
+    /**
+     * Calculates MD5 hash.
+     *
+     * @param fileName name of file or directory
+     * @return hex MD5 hash
+     * @throws IOException          if failed to perform file operations
+     * @throws InterruptedException if ForkJoin pool throws it
+     */
+    @NotNull
+    public static String md5CheckSum(@NotNull String fileName) throws ExecutionException, InterruptedException {
         ForkJoinPool forkJoinPool = new ForkJoinPool(4);
         ForkJoinTask<String> result = forkJoinPool.submit(new RecursiveHash(Paths.get(fileName)));
         return result.get();
     }
 
+    /**
+     * Recursive task for calculating hash.
+     */
     private static class RecursiveHash extends RecursiveTask<String> {
 
         private final Path file;
