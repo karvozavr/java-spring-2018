@@ -43,7 +43,6 @@ public class MD5CheckSumSingleThread {
      */
     @NotNull
     private static String md5hex(@NotNull Path file) {
-        System.out.println(file);
         try {
             if (Files.isDirectory(file)) {
                 return DigestUtils.md5Hex(file.getFileName() + Files.list(file)
