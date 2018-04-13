@@ -3,4 +3,5 @@ sudo: false
 
 env:
   - TEST_DIR=Lazy
+  - TEST_DIR=cw1
 script: cd $TEST_DIR && ./gradlew clean check
