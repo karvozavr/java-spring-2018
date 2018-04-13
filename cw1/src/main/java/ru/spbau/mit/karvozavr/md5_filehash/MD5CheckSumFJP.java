@@ -24,7 +24,7 @@ public class MD5CheckSumFJP {
      *
      * @param fileName name of file or directory
      * @return hex MD5 hash
-     * @throws IOException          if failed to perform file operations
+     * @throws ExecutionException if ForkJoin pool throws it
      * @throws InterruptedException if ForkJoin pool throws it
      */
     @NotNull
