@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,40 +22,12 @@ public class FTPServer implements Runnable {
     private ServerSocketChannel serverSocket;
     private FTPServerConfiguration config;
 
-    public FTPServer(FTPServerConfiguration config) throws IOException {
-        this.config = config;
-        if (!Files.isDirectory(config.serverRootDirectory)) {
-            throw new IllegalArgumentException("Not a directory.");
-        }
-        queryHandlerPool = Executors.newFixedThreadPool(config.connectionsNumber);
-
-        serverSocket = ServerSocketChannel.open();
-        serverSocket.configureBlocking(true);
-        serverSocket.bind(new InetSocketAddress(0));
+    public static FTPServer withRootDirectory(String dir) throws IOException {
+        return new FTPServer(defaultConfiguration(Paths.get(dir)));
     }
 
-
-    public static class FTPServerConfiguration {
-        public final int connectionsNumber;
-        public final long transferSize;
-        public final String encoding;
-        public final Path serverRootDirectory;
-
-        public FTPServerConfiguration(int connectionsNumber, long transferSize, String encoding, Path serverDirectory) {
-            this.connectionsNumber = connectionsNumber;
-            this.transferSize = transferSize;
-            this.encoding = encoding;
-            this.serverRootDirectory = serverDirectory;
-        }
-    }
-
-    public static FTPServerConfiguration defaultConfiguration(Path serverRootDirectory) {
-        return new FTPServerConfiguration(
-            16,
-            4096,
-            "UTF-8",
-            serverRootDirectory
-        );
+    public static FTPServer withConfiguration(FTPServerConfiguration config) throws IOException {
+        return new FTPServer(config);
     }
 
     public SocketAddress getAddress() throws IOException {
@@ -83,6 +55,32 @@ public class FTPServer implements Runnable {
         }
     }
 
+    public static class FTPServerConfiguration {
+        private int connectionsNumber;
+        private long transferSize;
+        private String encoding;
+        private Path serverRootDirectory;
+
+        public FTPServerConfiguration(int connectionsNumber, long transferSize, String encoding, Path serverDirectory) {
+            this.connectionsNumber = connectionsNumber;
+            this.transferSize = transferSize;
+            this.encoding = encoding;
+            this.serverRootDirectory = serverDirectory;
+        }
+    }
+
+    private FTPServer(FTPServerConfiguration config) throws IOException {
+        this.config = config;
+        if (!Files.isDirectory(config.serverRootDirectory)) {
+            throw new IllegalArgumentException("Not a directory.");
+        }
+        queryHandlerPool = Executors.newFixedThreadPool(config.connectionsNumber);
+
+        serverSocket = ServerSocketChannel.open();
+        serverSocket.configureBlocking(true);
+        serverSocket.bind(new InetSocketAddress(0));
+    }
+
     private void close() {
         if (serverSocket != null) {
             try {
@@ -94,6 +92,15 @@ public class FTPServer implements Runnable {
 
             serverSocket = null;
         }
+    }
+
+    private static FTPServerConfiguration defaultConfiguration(Path serverRootDirectory) {
+        return new FTPServerConfiguration(
+            16,
+            4096,
+            "UTF-8",
+            serverRootDirectory
+        );
     }
 
     private class QueryHandler implements Runnable {

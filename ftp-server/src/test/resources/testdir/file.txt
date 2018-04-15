@@ -1,8 +1,2 @@
-Some text
-in file 1
-cbsdgSDFBsdgdS
-Gdsg
-ds
-G
-SD
-GSDGSDGGdgsDGsdg
+File 1 contains.
+12345 rabbit gone for a walk.

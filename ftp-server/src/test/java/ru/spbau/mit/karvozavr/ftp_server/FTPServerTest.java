@@ -3,16 +3,10 @@ package ru.spbau.mit.karvozavr.ftp_server;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
-import java.nio.file.Paths;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -25,7 +19,7 @@ public class FTPServerTest {
     }
 
     @Test
-    public void testSmoke() throws IOException, InterruptedException {
+    public void testGet() throws IOException, InterruptedException {
         var server = startFtpServer();
         var channel = SocketChannel.open();
         channel.configureBlocking(true);
@@ -33,15 +27,7 @@ public class FTPServerTest {
         channel.write(encode("2 file.txt"));
         var scanner = new Scanner(channel);
         scanner.useDelimiter("\\Z");
-        System.out.println(scanner.next());
-    }
-
-    @Test
-    public void testFFF() throws IOException{
-        FileChannel channel = FileChannel.open(Paths.get(System.getProperty("user.dir") + "/src/test/resources/testdir/file.txt"));
-        var ch2 = Channels.newChannel(System.out);
-        ch2.write(encode("Lol kek"));
-        channel.transferTo(0, 2048, ch2);
+        assertThat(scanner.next(), is("46 File 1 contains.\n12345 rabbit gone for a walk."));
     }
 
     @Test
@@ -49,7 +35,7 @@ public class FTPServerTest {
         var server = startFtpServer();
         var channel = SocketChannel.open();
         var scanner = new Scanner(channel);
-        scanner.useDelimiter("\\z");
+        scanner.useDelimiter("\\Z");
         channel.configureBlocking(true);
         channel.connect(server.getAddress());
         channel.write(encode("1 /"));
@@ -58,7 +44,7 @@ public class FTPServerTest {
     }
 
     private FTPServer startFtpServer() throws IOException, InterruptedException {
-        var server = new FTPServer(FTPServer.defaultConfiguration(Paths.get(System.getProperty("user.dir") + "/src/test/resources/testdir")));
+        var server = FTPServer.withRootDirectory(System.getProperty("user.dir") + "/src/test/resources/testdir");
         var thread = new Thread(server);
         thread.start();
         return server;
