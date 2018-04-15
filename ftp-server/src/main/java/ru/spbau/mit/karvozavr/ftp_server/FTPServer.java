@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
@@ -185,8 +186,7 @@ public class FTPServer implements Runnable {
                 return;
             }
 
-            receiverChannel.write(encode(String.valueOf(size)));
-
+            receiverChannel.write(encode(size + " "));
             long bytesTransferred = 0;
             while (size - bytesTransferred > 0) {
                 bytesTransferred += fileChannel.transferTo(bytesTransferred, config.transferSize, receiverChannel);

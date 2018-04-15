@@ -3,8 +3,11 @@ package ru.spbau.mit.karvozavr.ftp_server;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
@@ -28,12 +31,17 @@ public class FTPServerTest {
         channel.configureBlocking(true);
         channel.connect(server.getAddress());
         channel.write(encode("2 file.txt"));
-//        var scanner = new Scanner(channel);
-//        scanner.useDelimiter("\\z");
+        var scanner = new Scanner(channel);
+        scanner.useDelimiter("\\Z");
+        System.out.println(scanner.next());
+    }
 
-        var buffer = ByteBuffer.allocate(128);
-        channel.read(buffer);
-        System.out.println();
+    @Test
+    public void testFFF() throws IOException{
+        FileChannel channel = FileChannel.open(Paths.get(System.getProperty("user.dir") + "/src/test/resources/testdir/file.txt"));
+        var ch2 = Channels.newChannel(System.out);
+        ch2.write(encode("Lol kek"));
+        channel.transferTo(0, 2048, ch2);
     }
 
     @Test
