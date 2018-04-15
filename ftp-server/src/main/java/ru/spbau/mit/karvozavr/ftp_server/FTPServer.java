@@ -71,11 +71,10 @@ public class FTPServer implements Runnable {
             while (true) {
                 try {
                     var clientSocket = serverSocket.accept();
-                    System.out.println("Gotcha");
                     queryHandlerPool.submit(new QueryHandler(clientSocket));
                 } catch (IOException e) {
                     e.printStackTrace();
-                    System.err.println("Failed to process connection.");
+                    System.err.println("Failed to handle connection.");
                 }
             }
         } finally {
@@ -98,40 +97,57 @@ public class FTPServer implements Runnable {
 
     private class QueryHandler implements Runnable {
 
-        SocketChannel channel;
-        Scanner reader;
+        SocketChannel receiverChannel;
+        Scanner scanner;
 
         public QueryHandler(SocketChannel receiverChannel) throws IOException {
-            this.channel = receiverChannel;
+            this.receiverChannel = receiverChannel;
             receiverChannel.configureBlocking(true);
-            this.reader = new Scanner(receiverChannel, config.encoding);
+            this.scanner = new Scanner(receiverChannel, config.encoding);
+            scanner.useDelimiter("\\z");
         }
 
         @Override
         public void run() {
-            int type = reader.nextInt();
-            String content = reader.nextLine();
+            var query = scanner.next();
+            var tokens = query.split(" ", 2);
+            int type = -1;
+            String content = "";
+            if (tokens.length == 2) {
+                type = Integer.parseInt(tokens[0]);
+                content = tokens[1];
+                content = content.trim();
+            }
+
+            if (content.equals("/"))
+                content = "";
+
             try {
                 switch (type) {
                     case 1:
-                        sendGetResponse(content, channel);
+                        sendListResponse(content, receiverChannel);
                         break;
                     case 2:
-                        sendListResponse(content, channel);
+                        sendGetResponse(content, receiverChannel);
                         break;
                     default:
-                        channel.write(encode("Unknown query type."));
+                        receiverChannel.write(encode("Unknown query type."));
                         break;
                 }
+
+                receiverChannel.close();
             } catch (IOException e) {
                 e.printStackTrace();
-                System.err.println("Failed to process query.");
+                System.err.println("Failed to handle the query.");
             }
+
+            scanner.close();
         }
     }
 
     private void sendListResponse(String dirName, SocketChannel receiverChannel) throws IOException {
         var dir = config.serverRootDirectory.resolve(dirName);
+
         String response;
 
         if (!Files.isDirectory(dir)) {
@@ -160,12 +176,22 @@ public class FTPServer implements Runnable {
             receiverChannel.write(encode("0"));
         } else {
             long size = Files.size(file);
+            FileChannel fileChannel = null;
+
+            try {
+                fileChannel = FileChannel.open(file);
+            } catch (IOException e) {
+                receiverChannel.write(encode("0"));
+                return;
+            }
+
             receiverChannel.write(encode(String.valueOf(size)));
 
-            var fileChannel = FileChannel.open(file);
-            while (size > 0) {
-                size -= fileChannel.transferTo(fileChannel.position(), config.transferSize, receiverChannel);
+            long bytesTransferred = 0;
+            while (size - bytesTransferred > 0) {
+                bytesTransferred += fileChannel.transferTo(bytesTransferred, config.transferSize, receiverChannel);
             }
+            fileChannel.close();
         }
     }
 
