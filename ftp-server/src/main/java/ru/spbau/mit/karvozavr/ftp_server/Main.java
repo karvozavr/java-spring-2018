@@ -2,6 +2,9 @@ package ru.spbau.mit.karvozavr.ftp_server;
 
 import java.io.IOException;
 
+/**
+ * Main server app class.
+ */
 public class Main {
 
     public static void main(String[] args) throws IOException {

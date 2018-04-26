@@ -16,20 +16,40 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+/**
+ * Simple FTP server class.
+ */
 public class FTPServer implements Runnable {
 
     private ExecutorService queryHandlerPool;
     private ServerSocketChannel serverSocket;
     private FTPServerConfiguration config;
 
+    /**
+     * Creates new FTP server instance with given root directory and default configuration.
+     * @param dir root server directory
+     * @return new FTP server instance
+     * @throws IOException in case of IO error
+     */
     public static FTPServer withRootDirectory(String dir) throws IOException {
         return new FTPServer(defaultConfiguration(Paths.get(dir)));
     }
 
+    /**
+     * Creates new FTP server instance with given configuration.
+     * @param config configuration
+     * @return new FTP server instance
+     * @throws IOException in case of IO error
+     */
     public static FTPServer withConfiguration(FTPServerConfiguration config) throws IOException {
         return new FTPServer(config);
     }
 
+    /**
+     * Returns server socket address.
+     * @return server socket address
+     * @throws IOException in case of IO error
+     */
     public SocketAddress getAddress() throws IOException {
         if (serverSocket != null) {
             return serverSocket.getLocalAddress();
@@ -38,6 +58,9 @@ public class FTPServer implements Runnable {
         }
     }
 
+    /**
+     * Starts the server.
+     */
     @Override
     public void run() {
         try {
@@ -55,6 +78,9 @@ public class FTPServer implements Runnable {
         }
     }
 
+    /**
+     * FTP server configuration data class.
+     */
     public static class FTPServerConfiguration {
         private int connectionsNumber;
         private long transferSize;
@@ -69,6 +95,11 @@ public class FTPServer implements Runnable {
         }
     }
 
+    /**
+     * Constructs new FTP server instance with given configuration.
+     * @param config configuration
+     * @throws IOException in case of IO error
+     */
     private FTPServer(FTPServerConfiguration config) throws IOException {
         this.config = config;
         if (!Files.isDirectory(config.serverRootDirectory)) {
@@ -81,6 +112,9 @@ public class FTPServer implements Runnable {
         serverSocket.bind(new InetSocketAddress(0));
     }
 
+    /**
+     * Shutdown server.
+     */
     private void close() {
         if (serverSocket != null) {
             try {
@@ -94,6 +128,11 @@ public class FTPServer implements Runnable {
         }
     }
 
+    /**
+     * Returns default server configuration with given root directory.
+     * @param serverRootDirectory root directory
+     * @return default server configuration
+     */
     private static FTPServerConfiguration defaultConfiguration(Path serverRootDirectory) {
         return new FTPServerConfiguration(
             16,
@@ -103,6 +142,9 @@ public class FTPServer implements Runnable {
         );
     }
 
+    /**
+     * Query handler task.
+     */
     private class QueryHandler implements Runnable {
 
         SocketChannel receiverChannel;
@@ -153,6 +195,12 @@ public class FTPServer implements Runnable {
         }
     }
 
+    /**
+     * Sends 'List' query response.
+     * @param dirName query directory
+     * @param receiverChannel receiver
+     * @throws IOException in case of IO error
+     */
     private void sendListResponse(String dirName, SocketChannel receiverChannel) throws IOException {
         var dir = config.serverRootDirectory.resolve(dirName);
 
@@ -178,6 +226,12 @@ public class FTPServer implements Runnable {
         receiverChannel.write(encode(response));
     }
 
+    /**
+     * Sends 'Get' query response.
+     * @param fileName query file name
+     * @param receiverChannel receiver
+     * @throws IOException in case of IO error
+     */
     private void sendGetResponse(String fileName, SocketChannel receiverChannel) throws IOException {
         Path file = config.serverRootDirectory.resolve(fileName);
         if (!Files.isRegularFile(file)) {
@@ -202,8 +256,13 @@ public class FTPServer implements Runnable {
         }
     }
 
-    private ByteBuffer encode(String s) {
+    /**
+     * Encodes message to bytes.
+     * @param message message to encode
+     * @return encoded message
+     */
+    private ByteBuffer encode(String message) {
         var encoder = Charset.forName(config.encoding);
-        return encoder.encode(s);
+        return encoder.encode(message);
     }
 }
