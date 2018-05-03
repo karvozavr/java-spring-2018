@@ -19,7 +19,7 @@ public class FTPServerTest {
     }
 
     @Test
-    public void testGet() throws IOException, InterruptedException {
+    public void testGet() throws IOException {
         var server = startFtpServer();
         var channel = SocketChannel.open();
         channel.configureBlocking(true);
@@ -27,11 +27,12 @@ public class FTPServerTest {
         channel.write(encode("2 file.txt"));
         var scanner = new Scanner(channel);
         scanner.useDelimiter("\\Z");
-        assertThat(scanner.next(), is("46 File 1 contains.\n12345 rabbit gone for a walk."));
+        assertThat(scanner.next(), is(String.format("46 File 1 contains.%n12345 rabbit gone for a walk.")));
+        server.shutdown();
     }
 
     @Test
-    public void testList() throws IOException, InterruptedException {
+    public void testList() throws IOException {
         var server = startFtpServer();
         var channel = SocketChannel.open();
         var scanner = new Scanner(channel);
@@ -40,10 +41,11 @@ public class FTPServerTest {
         channel.connect(server.getAddress());
         channel.write(encode("1 /"));
 
-        assertThat(scanner.next(), is("2 file.txt false Dir 1 true"));
+        assertThat(scanner.next(), is("2 Dir 1 true file.txt false"));
+        server.shutdown();
     }
 
-    private FTPServer startFtpServer() throws IOException, InterruptedException {
+    private static FTPServer startFtpServer() throws IOException {
         var server = FTPServer.withRootDirectory(System.getProperty("user.dir") + "/src/test/resources/testdir");
         var thread = new Thread(server);
         thread.start();

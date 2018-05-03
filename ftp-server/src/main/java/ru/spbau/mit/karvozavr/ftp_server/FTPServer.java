@@ -24,9 +24,12 @@ public class FTPServer implements Runnable {
     private ExecutorService queryHandlerPool;
     private ServerSocketChannel serverSocket;
     private FTPServerConfiguration config;
+    private volatile boolean running = false;
+
 
     /**
      * Creates new FTP server instance with given root directory and default configuration.
+     *
      * @param dir root server directory
      * @return new FTP server instance
      * @throws IOException in case of IO error
@@ -37,6 +40,7 @@ public class FTPServer implements Runnable {
 
     /**
      * Creates new FTP server instance with given configuration.
+     *
      * @param config configuration
      * @return new FTP server instance
      * @throws IOException in case of IO error
@@ -46,7 +50,26 @@ public class FTPServer implements Runnable {
     }
 
     /**
+     * Constructs new FTP server instance with given configuration.
+     *
+     * @param config configuration
+     * @throws IOException in case of IO error
+     */
+    private FTPServer(FTPServerConfiguration config) throws IOException {
+        this.config = config;
+        if (!Files.isDirectory(config.serverRootDirectory)) {
+            throw new IllegalArgumentException("Not a directory.");
+        }
+        queryHandlerPool = Executors.newFixedThreadPool(config.connectionsNumber);
+
+        serverSocket = ServerSocketChannel.open();
+        serverSocket.configureBlocking(true);
+        serverSocket.bind(new InetSocketAddress(22334));
+    }
+
+    /**
      * Returns server socket address.
+     *
      * @return server socket address
      * @throws IOException in case of IO error
      */
@@ -63,8 +86,9 @@ public class FTPServer implements Runnable {
      */
     @Override
     public void run() {
+        running = true;
         try {
-            while (true) {
+            while (running) {
                 try {
                     var clientSocket = serverSocket.accept();
                     queryHandlerPool.submit(new QueryHandler(clientSocket));
@@ -74,8 +98,27 @@ public class FTPServer implements Runnable {
                 }
             }
         } finally {
-            close();
+            shutdown();
         }
+    }
+
+    /**
+     * Shutdown server.
+     */
+    public synchronized void shutdown() {
+        running = false;
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("Failed to close server socket.");
+            }
+
+            serverSocket = null;
+        }
+
+        queryHandlerPool.shutdownNow();
     }
 
     /**
@@ -96,40 +139,8 @@ public class FTPServer implements Runnable {
     }
 
     /**
-     * Constructs new FTP server instance with given configuration.
-     * @param config configuration
-     * @throws IOException in case of IO error
-     */
-    private FTPServer(FTPServerConfiguration config) throws IOException {
-        this.config = config;
-        if (!Files.isDirectory(config.serverRootDirectory)) {
-            throw new IllegalArgumentException("Not a directory.");
-        }
-        queryHandlerPool = Executors.newFixedThreadPool(config.connectionsNumber);
-
-        serverSocket = ServerSocketChannel.open();
-        serverSocket.configureBlocking(true);
-        serverSocket.bind(new InetSocketAddress(0));
-    }
-
-    /**
-     * Shutdown server.
-     */
-    private void close() {
-        if (serverSocket != null) {
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.err.println("Failed to close socket.");
-            }
-
-            serverSocket = null;
-        }
-    }
-
-    /**
      * Returns default server configuration with given root directory.
+     *
      * @param serverRootDirectory root directory
      * @return default server configuration
      */
@@ -147,8 +158,8 @@ public class FTPServer implements Runnable {
      */
     private class QueryHandler implements Runnable {
 
-        SocketChannel receiverChannel;
-        Scanner scanner;
+        private SocketChannel receiverChannel;
+        private Scanner scanner;
 
         public QueryHandler(SocketChannel receiverChannel) throws IOException {
             this.receiverChannel = receiverChannel;
@@ -172,6 +183,7 @@ public class FTPServer implements Runnable {
             if (content.equals("/"))
                 content = "";
 
+            // send response to client request
             try {
                 switch (type) {
                     case 1:
@@ -184,20 +196,25 @@ public class FTPServer implements Runnable {
                         receiverChannel.write(encode("Unknown query type."));
                         break;
                 }
-
-                receiverChannel.close();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.err.println("Failed to handle the query.");
             }
 
+            // close channel & scanner
+            try {
+                receiverChannel.close();
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to close client channel.", e);
+            }
             scanner.close();
         }
     }
 
     /**
      * Sends 'List' query response.
-     * @param dirName query directory
+     *
+     * @param dirName         query directory
      * @param receiverChannel receiver
      * @throws IOException in case of IO error
      */
@@ -214,6 +231,7 @@ public class FTPServer implements Runnable {
                 String files = Files.list(dir)
                     .peek(path -> ++size[0])
                     .map(path -> path.getFileName() + " " + Boolean.toString(Files.isDirectory(path)))
+                    .sorted()
                     .collect(Collectors.joining(" "));
 
                 response = String.format("%d %s", size[0], files);
@@ -228,7 +246,8 @@ public class FTPServer implements Runnable {
 
     /**
      * Sends 'Get' query response.
-     * @param fileName query file name
+     *
+     * @param fileName        query file name
      * @param receiverChannel receiver
      * @throws IOException in case of IO error
      */
@@ -258,6 +277,7 @@ public class FTPServer implements Runnable {
 
     /**
      * Encodes message to bytes.
+     *
      * @param message message to encode
      * @return encoded message
      */
