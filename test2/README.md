@@ -1,1 +1,2 @@
 - No tests because there are no testable units
+- Build `gradle jfxJar`
