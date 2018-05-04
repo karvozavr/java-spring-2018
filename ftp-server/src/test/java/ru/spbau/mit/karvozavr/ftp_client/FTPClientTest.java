@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.spbau.mit.karvozavr.ftp_server.FTPServer;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
@@ -30,7 +31,7 @@ public class FTPClientTest {
     @Test
     public void list() throws IOException {
         var client = new FTPClient(serverAddress);
-        String result = client.list("/");
+        String result = client.list(File.separator);
         String expected = "2 Dir 1 true file.txt false";
         assertThat(result, is(expected));
     }
@@ -44,7 +45,8 @@ public class FTPClientTest {
     }
 
     private static FTPServer startFtpServer() throws IOException {
-        var server = FTPServer.withRootDirectory(System.getProperty("user.dir") + "/src/test/resources/testdir");
+        var server = FTPServer.withRootDirectory(String.join(File.separator,
+            System.getProperty("user.dir"), "src", "test", "resources", "testdir"));
         var thread = new Thread(server);
         thread.start();
         return server;

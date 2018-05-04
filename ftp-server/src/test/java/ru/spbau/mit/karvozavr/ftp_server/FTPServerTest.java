@@ -2,6 +2,7 @@ package ru.spbau.mit.karvozavr.ftp_server;
 
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -39,14 +40,15 @@ public class FTPServerTest {
         scanner.useDelimiter("\\Z");
         channel.configureBlocking(true);
         channel.connect(server.getAddress());
-        channel.write(encode("1 /"));
+        channel.write(encode("1 " + File.separator));
 
         assertThat(scanner.next(), is("2 Dir 1 true file.txt false"));
         server.shutdown();
     }
 
     private static FTPServer startFtpServer() throws IOException {
-        var server = FTPServer.withRootDirectory(System.getProperty("user.dir") + "/src/test/resources/testdir");
+        var server = FTPServer.withRootDirectory(String.join(File.separator,
+            System.getProperty("user.dir"), "src", "test", "resources", "testdir"));
         var thread = new Thread(server);
         thread.start();
         return server;
