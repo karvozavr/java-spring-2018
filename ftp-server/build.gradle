@@ -4,7 +4,10 @@ version '1.0'
 apply plugin: 'java'
 apply plugin: 'base'
 
-sourceCompatibility = 10
+compileJava {
+    sourceCompatibility = 1.10
+    targetCompatibility = 1.10
+}
 
 repositories {
     mavenCentral()
