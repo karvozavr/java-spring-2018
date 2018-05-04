@@ -33,7 +33,7 @@ buildscript {
 }
 
 jfx {
-    mainClass = 'ru.spbau.mit.karvozavr.tictactoe.ui.TicTacToeApp'
+    mainClass = 'ru.spbau.mit.karvozavr.Main'
     vendor = 'karvozavr'
 
     additionalAppResources = 'src/main/resources'
