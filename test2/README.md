@@ -1,0 +1,2 @@
+- Run using `gradle jfxRun`
+- No tests because there are no testable units
