@@ -36,6 +36,6 @@ sourceSets {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'ru.spbau.mit.karvozavr.md5_filehash'
+        attributes 'Main-Class': 'ru.spbau.mit.karvozavr.Main'
     }
 }

@@ -1,4 +1,6 @@
-package ru.spbau.mit.karvozavr.ftp_server;
+package ru.spbau.mit.karvozavr;
+
+import ru.spbau.mit.karvozavr.ftp_server.FTPServer;
 
 import java.io.IOException;
 
