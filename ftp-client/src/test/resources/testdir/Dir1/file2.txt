@@ -1,0 +1,3 @@
+Some text
+in file
+number 2
