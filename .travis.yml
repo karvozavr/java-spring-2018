@@ -3,5 +3,5 @@ sudo: false
 
 env:
   - TEST_DIR=Lazy
-  - TEST_DIR=ftp-server
+  - TEST_DIR=ftp-client
 script: cd $TEST_DIR && ./gradlew clean check
