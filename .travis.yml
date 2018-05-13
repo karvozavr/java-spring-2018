@@ -8,7 +8,7 @@ before_install:
 matrix:
     include:
         # Java 10 "OpenJDK"
-      - env: JDK='OpenJDK 10'
+        env: JDK='OpenJDK 10'
         install: . ./install-jdk.sh -F 10 -L GPL
 
 env:
@@ -16,4 +16,4 @@ env:
   - TEST_DIR=ftp-server
 
 script: 
-  - cd $TEST_DIR && ./gradlew clean check
+    cd $TEST_DIR && ./gradlew clean check
