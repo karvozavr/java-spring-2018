@@ -26,6 +26,7 @@ public class FTPServer implements Runnable, AutoCloseable {
     private FTPServerConfiguration config;
     private volatile boolean running = false;
     private Charset encoder;
+    private static final int serverPort = 22334;
 
     /**
      * Creates new FTP server instance with given root directory and default configuration.
@@ -65,7 +66,7 @@ public class FTPServer implements Runnable, AutoCloseable {
 
         serverSocket = ServerSocketChannel.open();
         serverSocket.configureBlocking(true);
-        serverSocket.bind(new InetSocketAddress(22334));
+        serverSocket.bind(new InetSocketAddress(serverPort));
     }
 
     /**
