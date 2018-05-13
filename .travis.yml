@@ -1,7 +1,16 @@
 language: java
 sudo: false
+dist: trusty
+
+before_install:
+    wget https://github.com/sormuras/bach/raw/master/install-jdk.sh
 
 env:
-  - TEST_DIR=Lazy
-  - TEST_DIR=ThreadPool
-script: cd $TEST_DIR && ./gradlew clean check
+    JDK='OpenJDK 10'
+  - TEST_DIR=Lazy 
+  - TEST_DIR=ftp-server
+
+install: . ./install-jdk.sh -F 10 -L GPL
+
+script: 
+    cd $TEST_DIR && ./gradlew clean check
