@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="Lazy" external.linked.project.path="$USER_HOME$/Yandex.Disk/lessons/term4/Java/java-spring-2018/Lazy" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="ru.spbau.mit.karvozavr.lazy" external.system.module.version="1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$USER_HOME$/Yandex.Disk/lessons/term4/Java/java-spring-2018/Lazy">
+      <excludeFolder url="file://$USER_HOME$/Yandex.Disk/lessons/term4/Java/java-spring-2018/Lazy/.gradle" />
+      <excludeFolder url="file://$USER_HOME$/Yandex.Disk/lessons/term4/Java/java-spring-2018/Lazy/build" />
+      <excludeFolder url="file://$USER_HOME$/Yandex.Disk/lessons/term4/Java/java-spring-2018/Lazy/out" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
