@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class FTPClient {
 
     private InetSocketAddress serverAddress;
+    private Charset encoder = Charset.forName("UTF-8");
 
     public FTPClient(InetSocketAddress serverAddress) {
         this.serverAddress = serverAddress;
@@ -44,14 +45,15 @@ public class FTPClient {
      * @throws IOException in case of IO error
      */
     public String get(String filename) throws IOException {
-        var channel = SocketChannel.open();
-        channel.connect(serverAddress);
-        channel.write(encode("2 "));
-        channel.write(encode(filename));
+        try (var channel = SocketChannel.open()) {
+            channel.connect(serverAddress);
+            channel.write(encode("2 "));
+            channel.write(encode(filename));
 
-        var scanner = new Scanner(channel);
-        scanner.useDelimiter("\\Z");
-        return scanner.next();
+            var scanner = new Scanner(channel);
+            scanner.useDelimiter("\\Z");
+            return scanner.next();
+        }
     }
 
     /**
@@ -61,7 +63,6 @@ public class FTPClient {
      * @return encoded string
      */
     private ByteBuffer encode(String s) {
-        var encoder = Charset.forName("UTF-8");
         return encoder.encode(s);
     }
 }

@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 /**
  * Simple FTP server class.
  */
-public class FTPServer implements Runnable {
+public class FTPServer implements Runnable, AutoCloseable {
 
     private ExecutorService queryHandlerPool;
     private ServerSocketChannel serverSocket;
     private FTPServerConfiguration config;
     private volatile boolean running = false;
-
+    private Charset encoder;
 
     /**
      * Creates new FTP server instance with given root directory and default configuration.
@@ -57,6 +57,7 @@ public class FTPServer implements Runnable {
      */
     private FTPServer(FTPServerConfiguration config) throws IOException {
         this.config = config;
+        encoder = Charset.forName(config.encoding);
         if (!Files.isDirectory(config.serverRootDirectory)) {
             throw new IllegalArgumentException("Not a directory.");
         }
@@ -119,6 +120,11 @@ public class FTPServer implements Runnable {
         }
 
         queryHandlerPool.shutdownNow();
+    }
+
+    @Override
+    public void close() throws Exception {
+        shutdown();
     }
 
     /**
@@ -282,7 +288,6 @@ public class FTPServer implements Runnable {
      * @return encoded message
      */
     private ByteBuffer encode(String message) {
-        var encoder = Charset.forName(config.encoding);
         return encoder.encode(message);
     }
 }
