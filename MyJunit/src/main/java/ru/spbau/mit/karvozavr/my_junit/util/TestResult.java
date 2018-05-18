@@ -1,12 +1,8 @@
 package ru.spbau.mit.karvozavr.my_junit.util;
 
-import ru.spbau.mit.karvozavr.my_junit.Test;
-
-import java.util.concurrent.TimeUnit;
-
 public class TestResult {
     public enum Result {
-        SUCCESSFUL,
+        SUCCESS,
         FAILED,
         IGNORED
     }
@@ -22,5 +18,19 @@ public class TestResult {
         this.result = result;
         this.duration = duration;
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        switch (result) {
+            case FAILED:
+                return String.format("FAILED \"test\" %s. Duration: %dms. Cause: %s.", testMethodName, duration, message);
+            case IGNORED:
+                return String.format("IGNORED \"test\" %s. Reason: %s.", testMethodName, message);
+            case SUCCESS:
+                return String.format("SUCCESS \"test\" %s. Duration: %dms.", testMethodName, duration);
+            default:
+                return "Incorrect result.";
+        }
     }
 }
