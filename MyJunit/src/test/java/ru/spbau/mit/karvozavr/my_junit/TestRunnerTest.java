@@ -21,34 +21,36 @@ public class TestRunnerTest {
     }
 
     @Test
-    public void testIgnored() throws InvocationTargetException, IllegalAccessException {
-        List<TestResult> results= testRunner.runTestClass();
-        TestResult result = results.get(3);
+    public void testAll() throws InvocationTargetException, IllegalAccessException {
+        List<TestResult> results = testRunner.runTestClass();
+        assertThat(results.size(), is(4));
+    }
+
+    @Test
+    public void testIgnored() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        TestResult result = testRunner.runTestMethod(TestClass.class.getMethod("ignored"));
         assertThat(result.testMethodName, is("ignored"));
         assertThat(result.result, is(TestResult.Result.IGNORED));
         assertThat(result.message, is("No need"));
     }
 
     @Test
-    public void testSuccessful() throws InvocationTargetException, IllegalAccessException {
-        List<TestResult> results= testRunner.runTestClass();
-        TestResult result = results.get(2);
+    public void testSuccessful() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        TestResult result = testRunner.runTestMethod(TestClass.class.getMethod("success"));
         assertThat(result.testMethodName, is("success"));
         assertThat(result.result, is(TestResult.Result.SUCCESS));
     }
 
     @Test
-    public void testFailed() throws InvocationTargetException, IllegalAccessException {
-        List<TestResult> results= testRunner.runTestClass();
-        TestResult result = results.get(0);
+    public void testFailed() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        TestResult result = testRunner.runTestMethod(TestClass.class.getMethod("fail"));
         assertThat(result.testMethodName, is("fail"));
         assertThat(result.result, is(TestResult.Result.FAILED));
     }
 
     @Test
-    public void testExpect() throws InvocationTargetException, IllegalAccessException {
-        List<TestResult> results= testRunner.runTestClass();
-        TestResult result = results.get(1);
+    public void testExpect() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        TestResult result = testRunner.runTestMethod(TestClass.class.getMethod("expect"));
         assertThat(result.testMethodName, is("expect"));
         assertThat(result.result, is(TestResult.Result.SUCCESS));
     }

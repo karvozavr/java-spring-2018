@@ -12,7 +12,6 @@ public class TestResult {
     public final long duration;
     public final String testMethodName;
 
-
     public TestResult(String testMethodName, Result result, long duration, String message) {
         this.testMethodName = testMethodName;
         this.result = result;

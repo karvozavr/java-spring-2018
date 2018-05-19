@@ -14,7 +14,6 @@ public @interface Test {
 
     class None extends Throwable {
         private None() {
-
         }
     }
 }

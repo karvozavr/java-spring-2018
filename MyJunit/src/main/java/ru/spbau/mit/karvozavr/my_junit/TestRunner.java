@@ -10,6 +10,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Runner for classes containing @Test annotated methods.
+ */
 public class TestRunner {
 
     private List<Method> before = new ArrayList<>();
@@ -18,6 +21,11 @@ public class TestRunner {
     private List<Method> afterClass = new ArrayList<>();
     private Object testClassInstance;
 
+    /**
+     * Initialize test runner with class.
+     *
+     * @param testClass given class
+     */
     public TestRunner(Class<?> testClass) throws IllegalAccessException, InstantiationException {
         for (Method method : testClass.getDeclaredMethods()) {
             if (method.isAccessible()) {
@@ -46,6 +54,11 @@ public class TestRunner {
         this.testClassInstance = testClass.newInstance();
     }
 
+    /**
+     * Run all tests in test class instance.
+     *
+     * @return list of results
+     */
     @NotNull
     public List<TestResult> runTestClass() throws InvocationTargetException, IllegalAccessException {
         List<TestResult> results = new ArrayList<>();
@@ -65,8 +78,14 @@ public class TestRunner {
         return results;
     }
 
+    /**
+     * Run test method of class instance.
+     *
+     * @param testMethod test method
+     * @return result
+     */
     @NotNull
-    private TestResult runTestMethod(@NotNull Method testMethod) throws InvocationTargetException, IllegalAccessException {
+    public TestResult runTestMethod(@NotNull Method testMethod) throws InvocationTargetException, IllegalAccessException {
         before();
         Test testAnnotation = testMethod.getAnnotation(Test.class);
         TestResult result;
@@ -93,24 +112,36 @@ public class TestRunner {
         return result;
     }
 
+    /**
+     * Run before test.
+     */
     private void before() throws InvocationTargetException, IllegalAccessException {
         for (Method method : before) {
             method.invoke(testClassInstance);
         }
     }
 
+    /**
+     * Run after test.
+     */
     private void after() throws InvocationTargetException, IllegalAccessException {
         for (Method method : after) {
             method.invoke(testClassInstance);
         }
     }
 
+    /**
+     * Run before class.
+     */
     private void beforeClass() throws InvocationTargetException, IllegalAccessException {
         for (Method method : beforeClass) {
             method.invoke(testClassInstance);
         }
     }
 
+    /**
+     * Run after class.
+     */
     private void afterClass() throws InvocationTargetException, IllegalAccessException {
         for (Method method : afterClass) {
             method.invoke(testClassInstance);
