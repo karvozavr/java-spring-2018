@@ -12,6 +12,19 @@ import java.util.List;
  */
 public class SmartBotAgent extends GameAgent {
 
+    /**
+     * Turn data class.
+     */
+    private class Turn {
+        public int row;
+        public int col;
+
+        public Turn(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
+    }
+
     private static final List<Integer> interests = Arrays.asList(4, 0, 2, 6, 8);
     private final CellType opponentType;
 
@@ -37,12 +50,8 @@ public class SmartBotAgent extends GameAgent {
     @Override
     public void takeTurn(GameField field) {
         layoutController.onTurnStart();
-
-        int turn = findBestTurn(field);
-        int turnRow = turn / 3;
-        int turnCol = turn % 3;
-        field.setCell(turnRow, turnCol, agentType);
-
+        Turn turn = findBestTurn(field);
+        field.setCell(turn.row, turn.col, agentType);
         layoutController.onTurnEnd();
     }
 
@@ -52,31 +61,31 @@ public class SmartBotAgent extends GameAgent {
      * @param field game field
      * @return turn
      */
-    private int findBestTurn(GameField field) {
+    private Turn findBestTurn(GameField field) {
         {
             int turn = getPriorityTurn(field, agentType);
 
             if (turn != -1)
-                return turn;
+                return new Turn(turn / 3, turn % 3);
 
             turn = getPriorityTurn(field, opponentType);
 
             if (turn != -1)
-                return turn;
+                return new Turn(turn / 3, turn % 3);
         }
 
         for (int turn : interests) {
             int turnRow = turn / 3;
             int turnCol = turn % 3;
             if (field.getCell(turnRow, turnCol) == CellType.EMPTY)
-                return turn;
+                return new Turn(turn / 3, turn % 3);
         }
 
         for (int turn = 0; turn < 9; turn++) {
             int turnRow = turn / 3;
             int turnCol = turn % 3;
             if (field.getCell(turnRow, turnCol) == CellType.EMPTY)
-                return turn;
+                return new Turn(turn / 3, turn % 3);
         }
 
         throw new IllegalStateException("Bot logic error!");

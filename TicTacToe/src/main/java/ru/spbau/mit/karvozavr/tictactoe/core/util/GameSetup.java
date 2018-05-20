@@ -3,9 +3,7 @@ package ru.spbau.mit.karvozavr.tictactoe.core.util;
 import ru.spbau.mit.karvozavr.tictactoe.GameStatisticsManager;
 import ru.spbau.mit.karvozavr.tictactoe.core.agent.GameAgent;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Single game settings and information.

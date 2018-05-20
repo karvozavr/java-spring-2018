@@ -1,11 +1,13 @@
 package ru.spbau.mit.karvozavr.tictactoe;
 
+import com.sun.javafx.collections.ImmutableObservableList;
 import ru.spbau.mit.karvozavr.tictactoe.core.util.GameSetup;
 
 import java.io.*;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,7 +29,7 @@ public class GameStatisticsManager {
     }
 
     public static List<GameStats> getStatistics() {
-        return statistics;
+        return Collections.unmodifiableList(statistics);
     }
 
     /**

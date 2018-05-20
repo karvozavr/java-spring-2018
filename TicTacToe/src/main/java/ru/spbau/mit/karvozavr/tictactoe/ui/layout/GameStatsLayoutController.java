@@ -1,6 +1,5 @@
 package ru.spbau.mit.karvozavr.tictactoe.ui.layout;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import ru.spbau.mit.karvozavr.tictactoe.GameStatisticsManager;

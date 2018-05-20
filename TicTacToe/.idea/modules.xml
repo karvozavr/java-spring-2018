@@ -3,9 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TicTacToe.iml" filepath="$PROJECT_DIR$/TicTacToe.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2090960910/TicTacToe_main.iml" filepath="$PROJECT_DIR$/.idea/modules/-2090960910/TicTacToe_main.iml" group="TicTacToe" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2090960910/TicTacToe_test.iml" filepath="$PROJECT_DIR$/.idea/modules/-2090960910/TicTacToe_test.iml" group="TicTacToe" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2090960910/java-spring-2018-TicTacToe.iml" filepath="$PROJECT_DIR$/.idea/modules/-2090960910/java-spring-2018-TicTacToe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1906503819/java-spring-2018-TicTacToe_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1906503819/java-spring-2018-TicTacToe_main.iml" group="TicTacToe" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1906503819/java-spring-2018-TicTacToe_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1906503819/java-spring-2018-TicTacToe_test.iml" group="TicTacToe" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1906503819/java-spring-2018-TicTacToe~1.iml" filepath="$PROJECT_DIR$/.idea/modules/1906503819/java-spring-2018-TicTacToe~1.iml" />
     </modules>
   </component>
 </project>

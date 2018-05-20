@@ -1,8 +1,7 @@
 package ru.spbau.mit.karvozavr.tictactoe.core.agent;
 
-import javafx.util.Pair;
-import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
 import ru.spbau.mit.karvozavr.tictactoe.core.GameField;
+import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
 import ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController;
 
 /**
@@ -27,7 +26,8 @@ public class PlayerAgent extends GameAgent {
     @Override
     public void takeTurn(GameField field) {
         Integer turn = layoutController.getNextTurn();
-        if (turn != null)
+        if (turn != null) {
             field.setCell(turn / 3, turn % 3, agentType);
+        }
     }
 }

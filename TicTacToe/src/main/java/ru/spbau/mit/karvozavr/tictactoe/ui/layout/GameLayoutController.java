@@ -7,7 +7,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.util.Pair;
 import ru.spbau.mit.karvozavr.tictactoe.core.GameController;
 import ru.spbau.mit.karvozavr.tictactoe.core.GameField;
 import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;

@@ -1,10 +1,8 @@
 package ru.spbau.mit.karvozavr.tictactoe.core.agent;
 
-import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
 import ru.spbau.mit.karvozavr.tictactoe.core.GameField;
+import ru.spbau.mit.karvozavr.tictactoe.core.util.CellType;
 import ru.spbau.mit.karvozavr.tictactoe.ui.layout.GameLayoutController;
-
-import java.io.Serializable;
 
 /**
  * Tic-Tac-Toe game agent.

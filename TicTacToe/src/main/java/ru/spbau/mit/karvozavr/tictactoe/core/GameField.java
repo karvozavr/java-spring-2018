@@ -15,9 +15,11 @@ public class GameField {
      * Construct empty game field.
      */
     public GameField() {
-        for (int row = 0; row < fieldSize; row++)
-            for (int col = 0; col < fieldSize; col++)
+        for (int row = 0; row < fieldSize; row++) {
+            for (int col = 0; col < fieldSize; col++) {
                 field[row][col] = CellType.EMPTY;
+            }
+        }
     }
 
     /**
@@ -28,10 +30,11 @@ public class GameField {
      * @param state new state
      */
     public void setCell(int row, int col, CellType state) {
-        if (field[row][col] == CellType.EMPTY)
+        if (field[row][col] == CellType.EMPTY) {
             field[row][col] = state;
-        else
+        } else {
             throw new IllegalStateException();
+        }
     }
 
     /**
@@ -48,9 +51,11 @@ public class GameField {
     public boolean isFull() {
         int filled = 0;
 
-        for (int row = 0; row < fieldSize; row++)
-            for (int col = 0; col < fieldSize; col++)
+        for (int row = 0; row < fieldSize; row++) {
+            for (int col = 0; col < fieldSize; col++) {
                 filled += field[row][col] != CellType.EMPTY ? 1 : 0;
+            }
+        }
 
         return filled == fieldSize * fieldSize;
     }
@@ -72,10 +77,11 @@ public class GameField {
                 }
             }
             if (isWin) {
-                if (field[row][0] == CellType.X)
+                if (field[row][0] == CellType.X) {
                     return GameResult.X_WIN;
-                else
+                } else {
                     return GameResult.O_WIN;
+                }
             }
         }
 
@@ -89,10 +95,11 @@ public class GameField {
                 }
             }
             if (isWin) {
-                if (field[0][col] == CellType.X)
+                if (field[0][col] == CellType.X) {
                     return GameResult.X_WIN;
-                else
+                } else {
                     return GameResult.O_WIN;
+                }
             }
         }
 
@@ -114,15 +121,17 @@ public class GameField {
         }
 
         if (isUpperLeft || isUpperRight) {
-            if (field[fieldSize / 2][fieldSize / 2] == CellType.X)
+            if (field[fieldSize / 2][fieldSize / 2] == CellType.X) {
                 return GameResult.X_WIN;
-            else
+            } else {
                 return GameResult.O_WIN;
+            }
         }
 
         // Check for draw
-        if (isFull())
+        if (isFull()) {
             return GameResult.DRAW;
+        }
 
         // The game hasn't ended
         return GameResult.NOT_FINISHED;
